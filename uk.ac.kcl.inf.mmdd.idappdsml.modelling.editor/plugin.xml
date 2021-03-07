@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated modelling -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="uk.ac.kcl.inf.mmdd.idappdsml.modelling.presentation.ModellingModelWizardID"
+            name="%_UI_ModellingModelWizard_label"
+            class="uk.ac.kcl.inf.mmdd.idappdsml.modelling.presentation.ModellingModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ModellingModelFile.gif">
+         <description>%_UI_ModellingModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated modelling -->
+      <editor
+            id="uk.ac.kcl.inf.mmdd.idappdsml.modelling.presentation.ModellingEditorID"
+            name="%_UI_ModellingEditor_label"
+            icon="icons/full/obj16/ModellingModelFile.gif"
+            extensions="modelling"
+            class="uk.ac.kcl.inf.mmdd.idappdsml.modelling.presentation.ModellingEditor"
+            contributorClass="uk.ac.kcl.inf.mmdd.idappdsml.modelling.presentation.ModellingActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

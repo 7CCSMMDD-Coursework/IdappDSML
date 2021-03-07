@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: uk.ac.kcl.inf.mmdd.idappdsml.grammar.ide
+Bundle-ManifestVersion: 2
+Bundle-Name: uk.ac.kcl.inf.mmdd.idappdsml.grammar.ide
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: uk.ac.kcl.inf.mmdd.idappdsml.grammar.ide; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: uk.ac.kcl.inf.mmdd.idappdsml.grammar,
+ uk.ac.kcl.inf.mmdd.idappdsml.modelling,
+ org.eclipse.xtext.ide,
+ org.eclipse.xtext.xbase.ide
+Bundle-RequiredExecutionEnvironment: JavaSE-11

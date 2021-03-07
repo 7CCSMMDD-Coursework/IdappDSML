@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/uk.ac.kcl.inf.mmdd.idappdsml.modelling/src-gen"
+    creationIcons="false" editDirectory="/uk.ac.kcl.inf.mmdd.idappdsml.modelling.edit/src-gen"
+    editorDirectory="/uk.ac.kcl.inf.mmdd.idappdsml.modelling.editor/src-gen" modelPluginID="uk.ac.kcl.inf.mmdd.idappdsml.modelling"
+    modelName="Modelling" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
+    copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>modelling.ecore</foreignModel>
+  <testsDirectory xsi:nil="true"/>
+  <genPackages prefix="Modelling" basePackage="uk.ac.kcl.inf.mmdd.idappdsml" disposableProviderFactory="true"
+      ecorePackage="modelling.ecore#/">
+    <genClasses ecoreClass="modelling.ecore#//Contract">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference modelling.ecore#//Contract/terms"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference modelling.ecore#//Contract/insurableobject"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference modelling.ecore#//Contract/insurancecompany"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference modelling.ecore#//Contract/customer"/>
+    </genClasses>
+    <genClasses ecoreClass="modelling.ecore#//Terms">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference modelling.ecore#//Terms/insurableobject"/>
+    </genClasses>
+    <genClasses ecoreClass="modelling.ecore#//Customer">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute modelling.ecore#//Customer/address"/>
+    </genClasses>
+    <genClasses ecoreClass="modelling.ecore#//InsuranceCompany">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute modelling.ecore#//InsuranceCompany/address"/>
+    </genClasses>
+    <genClasses ecoreClass="modelling.ecore#//InsurableObject"/>
+  </genPackages>
+</genmodel:GenModel>

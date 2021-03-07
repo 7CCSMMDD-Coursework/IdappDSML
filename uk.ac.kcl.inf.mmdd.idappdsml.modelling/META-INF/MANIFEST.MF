@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: uk.ac.kcl.inf.mmdd.idappdsml.modelling;singleton:=true
+Automatic-Module-Name: uk.ac.kcl.inf.mmdd.idappdsml.modelling
+Bundle-Version: 0.1.0.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: uk.ac.kcl.inf.mmdd.idappdsml.modelling,
+ uk.ac.kcl.inf.mmdd.idappdsml.modelling.impl,
+ uk.ac.kcl.inf.mmdd.idappdsml.modelling.util
+Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
