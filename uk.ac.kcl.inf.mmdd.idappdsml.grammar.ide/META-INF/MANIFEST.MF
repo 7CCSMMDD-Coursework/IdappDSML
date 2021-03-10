@@ -9,5 +9,8 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: uk.ac.kcl.inf.mmdd.idappdsml.grammar,
  uk.ac.kcl.inf.mmdd.idappdsml.modelling,
  org.eclipse.xtext.ide,
- org.eclipse.xtext.xbase.ide
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+ org.eclipse.xtext.xbase.ide,
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: uk.ac.kcl.inf.mmdd.ide.contentassist.antlr.internal,
+ uk.ac.kcl.inf.mmdd.ide.contentassist.antlr

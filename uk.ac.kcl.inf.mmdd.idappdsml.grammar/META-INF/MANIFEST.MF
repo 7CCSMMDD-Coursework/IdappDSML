@@ -9,5 +9,18 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: uk.ac.kcl.inf.mmdd.idappdsml.modelling,
  org.eclipse.xtext,
  org.eclipse.xtext.xbase,
- org.eclipse.equinox.common;bundle-version="3.5.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
+ org.eclipse.xtext.util,
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: uk.ac.kcl.inf.mmdd.parser.antlr.internal,
+ uk.ac.kcl.inf.mmdd.serializer,
+ uk.ac.kcl.inf.mmdd.scoping,
+ uk.ac.kcl.inf.mmdd.formatting2,
+ uk.ac.kcl.inf.mmdd.generator,
+ uk.ac.kcl.inf.mmdd,
+ uk.ac.kcl.inf.mmdd.services,
+ uk.ac.kcl.inf.mmdd.validation,
+ uk.ac.kcl.inf.mmdd.parser.antlr
+Import-Package: org.apache.log4j
