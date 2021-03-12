@@ -1,0 +1,53 @@
+grammar org.xtext.example.mydsl.MyDsl with org.eclipse.xtext.common.Terminals
+
+generate myDsl "http://www.xtext.org/example/mydsl/MyDsl"
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+Contract:
+	'Contract' '{'
+		
+		'ParticipatingParties' '{'
+			customer=Customer
+			company=Company
+		'}'
+		
+		insurableObjects=InsurableObjects
+		
+		'Terms' '{'
+			'Premium' '=' premium=REAL
+			'PremiumIncrease' '=' increase=REAL
+			'Claim' '=' claim=REAL
+			'PaymentPeriod' '=' period=INT // number of days
+		'}'
+	'}'
+;
+
+// Validation IDEA: Claim is always larger than Premium
+// Validation IDEA: increase real number has to be between 0 and 1
+
+Customer:
+	'CustomerAddress' '=' name=EString
+;
+
+Company:
+	'CompanyAddress' '=' name=EString
+;
+
+InsurableObjects:
+	'InsurableObjects' '{'
+		objects+=InsurableObject ( "," objects+=InsurableObject)*
+	'}'
+;
+
+InsurableObject:
+	'ObjectName' '=' name=EString
+;
+
+REAL returns ecore::EFloat hidden():
+	INT? "." INT
+;	
+
+EString returns ecore::EString:
+	STRING | ID
+;
