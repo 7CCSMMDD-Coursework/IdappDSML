@@ -26,6 +26,7 @@ import org.xtext.example.mydsl.myDsl.MyDslPackage;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.example.mydsl.myDsl.impl.ContractImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.myDsl.impl.ContractImpl#getCustomer <em>Customer</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.myDsl.impl.ContractImpl#getCompany <em>Company</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.myDsl.impl.ContractImpl#getInsurableObjects <em>Insurable Objects</em>}</li>
@@ -39,6 +40,26 @@ import org.xtext.example.mydsl.myDsl.MyDslPackage;
  */
 public class ContractImpl extends MinimalEObjectImpl.Container implements Contract
 {
+  /**
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected static final String NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
+
   /**
    * The cached value of the '{@link #getCustomer() <em>Customer</em>}' containment reference.
    * <!-- begin-user-doc -->
@@ -168,6 +189,31 @@ public class ContractImpl extends MinimalEObjectImpl.Container implements Contra
   protected EClass eStaticClass()
   {
     return MyDslPackage.Literals.CONTRACT;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String getName()
+  {
+    return name;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setName(String newName)
+  {
+    String oldName = name;
+    name = newName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MyDslPackage.CONTRACT__NAME, oldName, name));
   }
 
   /**
@@ -450,6 +496,8 @@ public class ContractImpl extends MinimalEObjectImpl.Container implements Contra
   {
     switch (featureID)
     {
+      case MyDslPackage.CONTRACT__NAME:
+        return getName();
       case MyDslPackage.CONTRACT__CUSTOMER:
         return getCustomer();
       case MyDslPackage.CONTRACT__COMPANY:
@@ -478,6 +526,9 @@ public class ContractImpl extends MinimalEObjectImpl.Container implements Contra
   {
     switch (featureID)
     {
+      case MyDslPackage.CONTRACT__NAME:
+        setName((String)newValue);
+        return;
       case MyDslPackage.CONTRACT__CUSTOMER:
         setCustomer((Customer)newValue);
         return;
@@ -513,6 +564,9 @@ public class ContractImpl extends MinimalEObjectImpl.Container implements Contra
   {
     switch (featureID)
     {
+      case MyDslPackage.CONTRACT__NAME:
+        setName(NAME_EDEFAULT);
+        return;
       case MyDslPackage.CONTRACT__CUSTOMER:
         setCustomer((Customer)null);
         return;
@@ -548,6 +602,8 @@ public class ContractImpl extends MinimalEObjectImpl.Container implements Contra
   {
     switch (featureID)
     {
+      case MyDslPackage.CONTRACT__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case MyDslPackage.CONTRACT__CUSTOMER:
         return customer != null;
       case MyDslPackage.CONTRACT__COMPANY:
@@ -577,7 +633,9 @@ public class ContractImpl extends MinimalEObjectImpl.Container implements Contra
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (premium: ");
+    result.append(" (name: ");
+    result.append(name);
+    result.append(", premium: ");
     result.append(premium);
     result.append(", increase: ");
     result.append(increase);

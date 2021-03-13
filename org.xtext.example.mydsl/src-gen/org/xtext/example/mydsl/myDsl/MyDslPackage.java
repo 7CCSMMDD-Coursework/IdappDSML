@@ -68,13 +68,22 @@ public interface MyDslPackage extends EPackage
   int CONTRACT = 0;
 
   /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT__NAME = 0;
+
+  /**
    * The feature id for the '<em><b>Customer</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CONTRACT__CUSTOMER = 0;
+  int CONTRACT__CUSTOMER = 1;
 
   /**
    * The feature id for the '<em><b>Company</b></em>' containment reference.
@@ -83,7 +92,7 @@ public interface MyDslPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONTRACT__COMPANY = 1;
+  int CONTRACT__COMPANY = 2;
 
   /**
    * The feature id for the '<em><b>Insurable Objects</b></em>' containment reference.
@@ -92,7 +101,7 @@ public interface MyDslPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONTRACT__INSURABLE_OBJECTS = 2;
+  int CONTRACT__INSURABLE_OBJECTS = 3;
 
   /**
    * The feature id for the '<em><b>Premium</b></em>' attribute.
@@ -101,7 +110,7 @@ public interface MyDslPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONTRACT__PREMIUM = 3;
+  int CONTRACT__PREMIUM = 4;
 
   /**
    * The feature id for the '<em><b>Increase</b></em>' attribute.
@@ -110,7 +119,7 @@ public interface MyDslPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONTRACT__INCREASE = 4;
+  int CONTRACT__INCREASE = 5;
 
   /**
    * The feature id for the '<em><b>Claim</b></em>' attribute.
@@ -119,7 +128,7 @@ public interface MyDslPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONTRACT__CLAIM = 5;
+  int CONTRACT__CLAIM = 6;
 
   /**
    * The feature id for the '<em><b>Period</b></em>' attribute.
@@ -128,7 +137,7 @@ public interface MyDslPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONTRACT__PERIOD = 6;
+  int CONTRACT__PERIOD = 7;
 
   /**
    * The number of structural features of the '<em>Contract</em>' class.
@@ -137,7 +146,7 @@ public interface MyDslPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONTRACT_FEATURE_COUNT = 7;
+  int CONTRACT_FEATURE_COUNT = 8;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.myDsl.impl.CustomerImpl <em>Customer</em>}' class.
@@ -150,13 +159,13 @@ public interface MyDslPackage extends EPackage
   int CUSTOMER = 1;
 
   /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * The feature id for the '<em><b>Address</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CUSTOMER__NAME = 0;
+  int CUSTOMER__ADDRESS = 0;
 
   /**
    * The number of structural features of the '<em>Customer</em>' class.
@@ -178,13 +187,13 @@ public interface MyDslPackage extends EPackage
   int COMPANY = 2;
 
   /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * The feature id for the '<em><b>Address</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int COMPANY__NAME = 0;
+  int COMPANY__ADDRESS = 0;
 
   /**
    * The number of structural features of the '<em>Company</em>' class.
@@ -261,6 +270,17 @@ public interface MyDslPackage extends EPackage
    * @generated
    */
   EClass getContract();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.myDsl.Contract#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see org.xtext.example.mydsl.myDsl.Contract#getName()
+   * @see #getContract()
+   * @generated
+   */
+  EAttribute getContract_Name();
 
   /**
    * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.myDsl.Contract#getCustomer <em>Customer</em>}'.
@@ -350,15 +370,15 @@ public interface MyDslPackage extends EPackage
   EClass getCustomer();
 
   /**
-   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.myDsl.Customer#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.myDsl.Customer#getAddress <em>Address</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Name</em>'.
-   * @see org.xtext.example.mydsl.myDsl.Customer#getName()
+   * @return the meta object for the attribute '<em>Address</em>'.
+   * @see org.xtext.example.mydsl.myDsl.Customer#getAddress()
    * @see #getCustomer()
    * @generated
    */
-  EAttribute getCustomer_Name();
+  EAttribute getCustomer_Address();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.myDsl.Company <em>Company</em>}'.
@@ -371,15 +391,15 @@ public interface MyDslPackage extends EPackage
   EClass getCompany();
 
   /**
-   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.myDsl.Company#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.myDsl.Company#getAddress <em>Address</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Name</em>'.
-   * @see org.xtext.example.mydsl.myDsl.Company#getName()
+   * @return the meta object for the attribute '<em>Address</em>'.
+   * @see org.xtext.example.mydsl.myDsl.Company#getAddress()
    * @see #getCompany()
    * @generated
    */
-  EAttribute getCompany_Name();
+  EAttribute getCompany_Address();
 
   /**
    * Returns the meta object for class '{@link org.xtext.example.mydsl.myDsl.InsurableObjects <em>Insurable Objects</em>}'.
@@ -457,6 +477,14 @@ public interface MyDslPackage extends EPackage
     EClass CONTRACT = eINSTANCE.getContract();
 
     /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute CONTRACT__NAME = eINSTANCE.getContract_Name();
+
+    /**
      * The meta object literal for the '<em><b>Customer</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -523,12 +551,12 @@ public interface MyDslPackage extends EPackage
     EClass CUSTOMER = eINSTANCE.getCustomer();
 
     /**
-     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Address</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute CUSTOMER__NAME = eINSTANCE.getCustomer_Name();
+    EAttribute CUSTOMER__ADDRESS = eINSTANCE.getCustomer_Address();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.myDsl.impl.CompanyImpl <em>Company</em>}' class.
@@ -541,12 +569,12 @@ public interface MyDslPackage extends EPackage
     EClass COMPANY = eINSTANCE.getCompany();
 
     /**
-     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Address</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute COMPANY__NAME = eINSTANCE.getCompany_Name();
+    EAttribute COMPANY__ADDRESS = eINSTANCE.getCompany_Address();
 
     /**
      * The meta object literal for the '{@link org.xtext.example.mydsl.myDsl.impl.InsurableObjectsImpl <em>Insurable Objects</em>}' class.

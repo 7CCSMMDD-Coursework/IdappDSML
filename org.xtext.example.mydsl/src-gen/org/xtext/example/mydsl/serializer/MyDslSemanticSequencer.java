@@ -61,15 +61,15 @@ public class MyDslSemanticSequencer extends AbstractDelegatingSemanticSequencer 
 	 *     Company returns Company
 	 *
 	 * Constraint:
-	 *     name=EString
+	 *     address=EString
 	 */
 	protected void sequence_Company(ISerializationContext context, Company semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MyDslPackage.Literals.COMPANY__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MyDslPackage.Literals.COMPANY__NAME));
+			if (transientValues.isValueTransient(semanticObject, MyDslPackage.Literals.COMPANY__ADDRESS) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MyDslPackage.Literals.COMPANY__ADDRESS));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getCompanyAccess().getNameEStringParserRuleCall_2_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getCompanyAccess().getAddressEStringParserRuleCall_2_0(), semanticObject.getAddress());
 		feeder.finish();
 	}
 	
@@ -80,6 +80,7 @@ public class MyDslSemanticSequencer extends AbstractDelegatingSemanticSequencer 
 	 *
 	 * Constraint:
 	 *     (
+	 *         name=EString 
 	 *         customer=Customer 
 	 *         company=Company 
 	 *         insurableObjects=InsurableObjects 
@@ -91,6 +92,8 @@ public class MyDslSemanticSequencer extends AbstractDelegatingSemanticSequencer 
 	 */
 	protected void sequence_Contract(ISerializationContext context, Contract semanticObject) {
 		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MyDslPackage.Literals.CONTRACT__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MyDslPackage.Literals.CONTRACT__NAME));
 			if (transientValues.isValueTransient(semanticObject, MyDslPackage.Literals.CONTRACT__CUSTOMER) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MyDslPackage.Literals.CONTRACT__CUSTOMER));
 			if (transientValues.isValueTransient(semanticObject, MyDslPackage.Literals.CONTRACT__COMPANY) == ValueTransient.YES)
@@ -107,13 +110,14 @@ public class MyDslSemanticSequencer extends AbstractDelegatingSemanticSequencer 
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MyDslPackage.Literals.CONTRACT__PERIOD));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getContractAccess().getCustomerCustomerParserRuleCall_4_0(), semanticObject.getCustomer());
-		feeder.accept(grammarAccess.getContractAccess().getCompanyCompanyParserRuleCall_5_0(), semanticObject.getCompany());
-		feeder.accept(grammarAccess.getContractAccess().getInsurableObjectsInsurableObjectsParserRuleCall_7_0(), semanticObject.getInsurableObjects());
-		feeder.accept(grammarAccess.getContractAccess().getPremiumREALParserRuleCall_12_0(), semanticObject.getPremium());
-		feeder.accept(grammarAccess.getContractAccess().getIncreaseREALParserRuleCall_15_0(), semanticObject.getIncrease());
-		feeder.accept(grammarAccess.getContractAccess().getClaimREALParserRuleCall_18_0(), semanticObject.getClaim());
-		feeder.accept(grammarAccess.getContractAccess().getPeriodINTTerminalRuleCall_21_0(), semanticObject.getPeriod());
+		feeder.accept(grammarAccess.getContractAccess().getNameEStringParserRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getContractAccess().getCustomerCustomerParserRuleCall_5_0(), semanticObject.getCustomer());
+		feeder.accept(grammarAccess.getContractAccess().getCompanyCompanyParserRuleCall_6_0(), semanticObject.getCompany());
+		feeder.accept(grammarAccess.getContractAccess().getInsurableObjectsInsurableObjectsParserRuleCall_8_0(), semanticObject.getInsurableObjects());
+		feeder.accept(grammarAccess.getContractAccess().getPremiumREALParserRuleCall_13_0(), semanticObject.getPremium());
+		feeder.accept(grammarAccess.getContractAccess().getIncreaseREALParserRuleCall_16_0(), semanticObject.getIncrease());
+		feeder.accept(grammarAccess.getContractAccess().getClaimREALParserRuleCall_19_0(), semanticObject.getClaim());
+		feeder.accept(grammarAccess.getContractAccess().getPeriodINTTerminalRuleCall_22_0(), semanticObject.getPeriod());
 		feeder.finish();
 	}
 	
@@ -123,15 +127,15 @@ public class MyDslSemanticSequencer extends AbstractDelegatingSemanticSequencer 
 	 *     Customer returns Customer
 	 *
 	 * Constraint:
-	 *     name=EString
+	 *     address=EString
 	 */
 	protected void sequence_Customer(ISerializationContext context, Customer semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MyDslPackage.Literals.CUSTOMER__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MyDslPackage.Literals.CUSTOMER__NAME));
+			if (transientValues.isValueTransient(semanticObject, MyDslPackage.Literals.CUSTOMER__ADDRESS) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MyDslPackage.Literals.CUSTOMER__ADDRESS));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getCustomerAccess().getNameEStringParserRuleCall_2_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getCustomerAccess().getAddressEStringParserRuleCall_2_0(), semanticObject.getAddress());
 		feeder.finish();
 	}
 	

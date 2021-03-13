@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
+import org.xtext.example.mydsl.myDsl.Contract
 
 /**
  * Generates code from your model files on save.
@@ -16,10 +17,69 @@ import org.eclipse.xtext.generator.IGeneratorContext
 class MyDslGenerator extends AbstractGenerator {
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-//		fsa.generateFile('greetings.txt', 'People to greet: ' + 
-//			resource.allContents
-//				.filter(Greeting)
-//				.map[name]
-//				.join(', '))
+		val model = resource.contents.head as Contract
+		fsa.generateFile(resource.targetFileName,
+				model.doGenerateContract
+		)
 	}
+	
+	def String getTargetFileName(Resource resource) {
+		val originalFileName = resource.URI.lastSegment;
+		originalFileName.substring(0, originalFileName.indexOf(".")) + ".sol";
+	}
+	
+	def String doGenerateContract(Contract contract) {
+		'''
+		pragma solidity ^0.4.15
+		
+		contract «contract.name» {
+			
+			«val customerAddress = contract.customer.address»
+			«val companyAddress = contract.company.address»
+			«val insurableObjects = contract.insurableObjects»
+			«val premium = contract.premium»
+			«val premiumIncrease = contract.increase»
+			«val claim = contract.claim»
+			«val paymentPeriod = contract.period»
+			
+			address public customerAddress = «customerAddress»;
+			
+			address public companyAddress = «companyAddress»;
+			
+			uint256 public premium = «premium»;
+			
+			uint256 public premiumIncrease = «premiumIncrease»;
+			
+			uint256 public claim = «claim»;
+			
+			uint256 public paymentPeriod = «paymentPeriod»;
+			
+			uint256 public numAccidents = 0;
+			
+			uint256 public lastPayment;
+			
+			constructor() public payable {
+				require(msg.value == getPremium(customerAddress));
+				lastPayment = now;
+			}
+			
+		    function getPremium(address customer) constant public returns (uint256 premium) {
+		        return ((numAccidents * premiumIncrease) + 1) * premium;
+		    }
+		    
+		    function pay() public payable {
+		    	require(msg.sender == customerAddress);
+		    	require(msg.value == getPremium(customerAddress));
+		    	companyAddress.transfer(msg.value)
+		    	lastPayment = now;
+		    }
+		    
+		    function claim() public payable {
+		    	customerAddress.transfer(claim);
+		    	numAccidents++;
+		    }
+		}
+		'''
+	}
+	
 }

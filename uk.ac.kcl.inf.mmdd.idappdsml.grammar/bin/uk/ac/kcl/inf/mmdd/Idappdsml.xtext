@@ -14,10 +14,6 @@ Contract returns Contract:
 		('terms' '{' terms+=Terms ( "," terms+=Terms)* '}' )?
 	'}';
 
-
-
-
-
 Terms returns Terms:
 	{Terms}
 	'Terms'

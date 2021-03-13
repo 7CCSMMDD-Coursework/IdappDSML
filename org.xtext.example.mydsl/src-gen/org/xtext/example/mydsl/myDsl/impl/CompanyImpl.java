@@ -21,7 +21,7 @@ import org.xtext.example.mydsl.myDsl.MyDslPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.example.mydsl.myDsl.impl.CompanyImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.myDsl.impl.CompanyImpl#getAddress <em>Address</em>}</li>
  * </ul>
  *
  * @generated
@@ -29,24 +29,24 @@ import org.xtext.example.mydsl.myDsl.MyDslPackage;
 public class CompanyImpl extends MinimalEObjectImpl.Container implements Company
 {
   /**
-   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+   * The default value of the '{@link #getAddress() <em>Address</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getName()
+   * @see #getAddress()
    * @generated
    * @ordered
    */
-  protected static final String NAME_EDEFAULT = null;
+  protected static final String ADDRESS_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * The cached value of the '{@link #getAddress() <em>Address</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getName()
+   * @see #getAddress()
    * @generated
    * @ordered
    */
-  protected String name = NAME_EDEFAULT;
+  protected String address = ADDRESS_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -75,9 +75,9 @@ public class CompanyImpl extends MinimalEObjectImpl.Container implements Company
    * @generated
    */
   @Override
-  public String getName()
+  public String getAddress()
   {
-    return name;
+    return address;
   }
 
   /**
@@ -86,12 +86,12 @@ public class CompanyImpl extends MinimalEObjectImpl.Container implements Company
    * @generated
    */
   @Override
-  public void setName(String newName)
+  public void setAddress(String newAddress)
   {
-    String oldName = name;
-    name = newName;
+    String oldAddress = address;
+    address = newAddress;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MyDslPackage.COMPANY__NAME, oldName, name));
+      eNotify(new ENotificationImpl(this, Notification.SET, MyDslPackage.COMPANY__ADDRESS, oldAddress, address));
   }
 
   /**
@@ -104,8 +104,8 @@ public class CompanyImpl extends MinimalEObjectImpl.Container implements Company
   {
     switch (featureID)
     {
-      case MyDslPackage.COMPANY__NAME:
-        return getName();
+      case MyDslPackage.COMPANY__ADDRESS:
+        return getAddress();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -120,8 +120,8 @@ public class CompanyImpl extends MinimalEObjectImpl.Container implements Company
   {
     switch (featureID)
     {
-      case MyDslPackage.COMPANY__NAME:
-        setName((String)newValue);
+      case MyDslPackage.COMPANY__ADDRESS:
+        setAddress((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -137,8 +137,8 @@ public class CompanyImpl extends MinimalEObjectImpl.Container implements Company
   {
     switch (featureID)
     {
-      case MyDslPackage.COMPANY__NAME:
-        setName(NAME_EDEFAULT);
+      case MyDslPackage.COMPANY__ADDRESS:
+        setAddress(ADDRESS_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -154,8 +154,8 @@ public class CompanyImpl extends MinimalEObjectImpl.Container implements Company
   {
     switch (featureID)
     {
-      case MyDslPackage.COMPANY__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case MyDslPackage.COMPANY__ADDRESS:
+        return ADDRESS_EDEFAULT == null ? address != null : !ADDRESS_EDEFAULT.equals(address);
     }
     return super.eIsSet(featureID);
   }
@@ -171,8 +171,8 @@ public class CompanyImpl extends MinimalEObjectImpl.Container implements Company
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (name: ");
-    result.append(name);
+    result.append(" (address: ");
+    result.append(address);
     result.append(')');
     return result.toString();
   }

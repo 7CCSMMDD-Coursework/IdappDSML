@@ -80,24 +80,43 @@ ruleContract returns [EObject current=null]
 		{
 			newLeafNode(otherlv_0, grammarAccess.getContractAccess().getContractKeyword_0());
 		}
-		otherlv_1='{'
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getContractAccess().getNameEStringParserRuleCall_1_0());
+				}
+				lv_name_1_0=ruleEString
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getContractRule());
+					}
+					set(
+						$current,
+						"name",
+						lv_name_1_0,
+						"org.xtext.example.mydsl.MyDsl.EString");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_2='{'
 		{
-			newLeafNode(otherlv_1, grammarAccess.getContractAccess().getLeftCurlyBracketKeyword_1());
+			newLeafNode(otherlv_2, grammarAccess.getContractAccess().getLeftCurlyBracketKeyword_2());
 		}
-		otherlv_2='ParticipatingParties'
+		otherlv_3='ParticipatingParties'
 		{
-			newLeafNode(otherlv_2, grammarAccess.getContractAccess().getParticipatingPartiesKeyword_2());
+			newLeafNode(otherlv_3, grammarAccess.getContractAccess().getParticipatingPartiesKeyword_3());
 		}
-		otherlv_3='{'
+		otherlv_4='{'
 		{
-			newLeafNode(otherlv_3, grammarAccess.getContractAccess().getLeftCurlyBracketKeyword_3());
+			newLeafNode(otherlv_4, grammarAccess.getContractAccess().getLeftCurlyBracketKeyword_4());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getContractAccess().getCustomerCustomerParserRuleCall_4_0());
+					newCompositeNode(grammarAccess.getContractAccess().getCustomerCustomerParserRuleCall_5_0());
 				}
-				lv_customer_4_0=ruleCustomer
+				lv_customer_5_0=ruleCustomer
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getContractRule());
@@ -105,7 +124,7 @@ ruleContract returns [EObject current=null]
 					set(
 						$current,
 						"customer",
-						lv_customer_4_0,
+						lv_customer_5_0,
 						"org.xtext.example.mydsl.MyDsl.Customer");
 					afterParserOrEnumRuleCall();
 				}
@@ -114,9 +133,9 @@ ruleContract returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getContractAccess().getCompanyCompanyParserRuleCall_5_0());
+					newCompositeNode(grammarAccess.getContractAccess().getCompanyCompanyParserRuleCall_6_0());
 				}
-				lv_company_5_0=ruleCompany
+				lv_company_6_0=ruleCompany
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getContractRule());
@@ -124,22 +143,22 @@ ruleContract returns [EObject current=null]
 					set(
 						$current,
 						"company",
-						lv_company_5_0,
+						lv_company_6_0,
 						"org.xtext.example.mydsl.MyDsl.Company");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)
-		otherlv_6='}'
+		otherlv_7='}'
 		{
-			newLeafNode(otherlv_6, grammarAccess.getContractAccess().getRightCurlyBracketKeyword_6());
+			newLeafNode(otherlv_7, grammarAccess.getContractAccess().getRightCurlyBracketKeyword_7());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getContractAccess().getInsurableObjectsInsurableObjectsParserRuleCall_7_0());
+					newCompositeNode(grammarAccess.getContractAccess().getInsurableObjectsInsurableObjectsParserRuleCall_8_0());
 				}
-				lv_insurableObjects_7_0=ruleInsurableObjects
+				lv_insurableObjects_8_0=ruleInsurableObjects
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getContractRule());
@@ -147,34 +166,34 @@ ruleContract returns [EObject current=null]
 					set(
 						$current,
 						"insurableObjects",
-						lv_insurableObjects_7_0,
+						lv_insurableObjects_8_0,
 						"org.xtext.example.mydsl.MyDsl.InsurableObjects");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)
-		otherlv_8='Terms'
+		otherlv_9='Terms'
 		{
-			newLeafNode(otherlv_8, grammarAccess.getContractAccess().getTermsKeyword_8());
+			newLeafNode(otherlv_9, grammarAccess.getContractAccess().getTermsKeyword_9());
 		}
-		otherlv_9='{'
+		otherlv_10='{'
 		{
-			newLeafNode(otherlv_9, grammarAccess.getContractAccess().getLeftCurlyBracketKeyword_9());
+			newLeafNode(otherlv_10, grammarAccess.getContractAccess().getLeftCurlyBracketKeyword_10());
 		}
-		otherlv_10='Premium'
+		otherlv_11='Premium'
 		{
-			newLeafNode(otherlv_10, grammarAccess.getContractAccess().getPremiumKeyword_10());
+			newLeafNode(otherlv_11, grammarAccess.getContractAccess().getPremiumKeyword_11());
 		}
-		otherlv_11='='
+		otherlv_12='='
 		{
-			newLeafNode(otherlv_11, grammarAccess.getContractAccess().getEqualsSignKeyword_11());
+			newLeafNode(otherlv_12, grammarAccess.getContractAccess().getEqualsSignKeyword_12());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getContractAccess().getPremiumREALParserRuleCall_12_0());
+					newCompositeNode(grammarAccess.getContractAccess().getPremiumREALParserRuleCall_13_0());
 				}
-				lv_premium_12_0=ruleREAL
+				lv_premium_13_0=ruleREAL
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getContractRule());
@@ -182,26 +201,26 @@ ruleContract returns [EObject current=null]
 					set(
 						$current,
 						"premium",
-						lv_premium_12_0,
+						lv_premium_13_0,
 						"org.xtext.example.mydsl.MyDsl.REAL");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)
-		otherlv_13='PremiumIncrease'
+		otherlv_14='PremiumIncrease'
 		{
-			newLeafNode(otherlv_13, grammarAccess.getContractAccess().getPremiumIncreaseKeyword_13());
+			newLeafNode(otherlv_14, grammarAccess.getContractAccess().getPremiumIncreaseKeyword_14());
 		}
-		otherlv_14='='
+		otherlv_15='='
 		{
-			newLeafNode(otherlv_14, grammarAccess.getContractAccess().getEqualsSignKeyword_14());
+			newLeafNode(otherlv_15, grammarAccess.getContractAccess().getEqualsSignKeyword_15());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getContractAccess().getIncreaseREALParserRuleCall_15_0());
+					newCompositeNode(grammarAccess.getContractAccess().getIncreaseREALParserRuleCall_16_0());
 				}
-				lv_increase_15_0=ruleREAL
+				lv_increase_16_0=ruleREAL
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getContractRule());
@@ -209,26 +228,26 @@ ruleContract returns [EObject current=null]
 					set(
 						$current,
 						"increase",
-						lv_increase_15_0,
+						lv_increase_16_0,
 						"org.xtext.example.mydsl.MyDsl.REAL");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)
-		otherlv_16='Claim'
+		otherlv_17='Claim'
 		{
-			newLeafNode(otherlv_16, grammarAccess.getContractAccess().getClaimKeyword_16());
+			newLeafNode(otherlv_17, grammarAccess.getContractAccess().getClaimKeyword_17());
 		}
-		otherlv_17='='
+		otherlv_18='='
 		{
-			newLeafNode(otherlv_17, grammarAccess.getContractAccess().getEqualsSignKeyword_17());
+			newLeafNode(otherlv_18, grammarAccess.getContractAccess().getEqualsSignKeyword_18());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getContractAccess().getClaimREALParserRuleCall_18_0());
+					newCompositeNode(grammarAccess.getContractAccess().getClaimREALParserRuleCall_19_0());
 				}
-				lv_claim_18_0=ruleREAL
+				lv_claim_19_0=ruleREAL
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getContractRule());
@@ -236,25 +255,25 @@ ruleContract returns [EObject current=null]
 					set(
 						$current,
 						"claim",
-						lv_claim_18_0,
+						lv_claim_19_0,
 						"org.xtext.example.mydsl.MyDsl.REAL");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)
-		otherlv_19='PaymentPeriod'
+		otherlv_20='PaymentPeriod'
 		{
-			newLeafNode(otherlv_19, grammarAccess.getContractAccess().getPaymentPeriodKeyword_19());
+			newLeafNode(otherlv_20, grammarAccess.getContractAccess().getPaymentPeriodKeyword_20());
 		}
-		otherlv_20='='
+		otherlv_21='='
 		{
-			newLeafNode(otherlv_20, grammarAccess.getContractAccess().getEqualsSignKeyword_20());
+			newLeafNode(otherlv_21, grammarAccess.getContractAccess().getEqualsSignKeyword_21());
 		}
 		(
 			(
-				lv_period_21_0=RULE_INT
+				lv_period_22_0=RULE_INT
 				{
-					newLeafNode(lv_period_21_0, grammarAccess.getContractAccess().getPeriodINTTerminalRuleCall_21_0());
+					newLeafNode(lv_period_22_0, grammarAccess.getContractAccess().getPeriodINTTerminalRuleCall_22_0());
 				}
 				{
 					if ($current==null) {
@@ -263,18 +282,18 @@ ruleContract returns [EObject current=null]
 					setWithLastConsumed(
 						$current,
 						"period",
-						lv_period_21_0,
+						lv_period_22_0,
 						"org.eclipse.xtext.common.Terminals.INT");
 				}
 			)
 		)
-		otherlv_22='}'
-		{
-			newLeafNode(otherlv_22, grammarAccess.getContractAccess().getRightCurlyBracketKeyword_22());
-		}
 		otherlv_23='}'
 		{
 			newLeafNode(otherlv_23, grammarAccess.getContractAccess().getRightCurlyBracketKeyword_23());
+		}
+		otherlv_24='}'
+		{
+			newLeafNode(otherlv_24, grammarAccess.getContractAccess().getRightCurlyBracketKeyword_24());
 		}
 	)
 ;
@@ -306,17 +325,17 @@ ruleCustomer returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getCustomerAccess().getNameEStringParserRuleCall_2_0());
+					newCompositeNode(grammarAccess.getCustomerAccess().getAddressEStringParserRuleCall_2_0());
 				}
-				lv_name_2_0=ruleEString
+				lv_address_2_0=ruleEString
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getCustomerRule());
 					}
 					set(
 						$current,
-						"name",
-						lv_name_2_0,
+						"address",
+						lv_address_2_0,
 						"org.xtext.example.mydsl.MyDsl.EString");
 					afterParserOrEnumRuleCall();
 				}
@@ -352,17 +371,17 @@ ruleCompany returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getCompanyAccess().getNameEStringParserRuleCall_2_0());
+					newCompositeNode(grammarAccess.getCompanyAccess().getAddressEStringParserRuleCall_2_0());
 				}
-				lv_name_2_0=ruleEString
+				lv_address_2_0=ruleEString
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getCompanyRule());
 					}
 					set(
 						$current,
-						"name",
-						lv_name_2_0,
+						"address",
+						lv_address_2_0,
 						"org.xtext.example.mydsl.MyDsl.EString");
 					afterParserOrEnumRuleCall();
 				}

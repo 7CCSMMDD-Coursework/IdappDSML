@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.example.mydsl.myDsl.Company#getName <em>Name</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.myDsl.Company#getAddress <em>Address</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.myDsl.MyDslPackage#getCompany()
@@ -24,25 +24,25 @@ import org.eclipse.emf.ecore.EObject;
 public interface Company extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Name</b></em>' attribute.
+   * Returns the value of the '<em><b>Address</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Name</em>' attribute.
-   * @see #setName(String)
-   * @see org.xtext.example.mydsl.myDsl.MyDslPackage#getCompany_Name()
+   * @return the value of the '<em>Address</em>' attribute.
+   * @see #setAddress(String)
+   * @see org.xtext.example.mydsl.myDsl.MyDslPackage#getCompany_Address()
    * @model
    * @generated
    */
-  String getName();
+  String getAddress();
 
   /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.myDsl.Company#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link org.xtext.example.mydsl.myDsl.Company#getAddress <em>Address</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Name</em>' attribute.
-   * @see #getName()
+   * @param value the new value of the '<em>Address</em>' attribute.
+   * @see #getAddress()
    * @generated
    */
-  void setName(String value);
+  void setAddress(String value);
 
 } // Company

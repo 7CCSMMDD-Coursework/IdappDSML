@@ -141,9 +141,9 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
-  public EReference getContract_Customer()
+  public EAttribute getContract_Name()
   {
-    return (EReference)contractEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)contractEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -152,7 +152,7 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
-  public EReference getContract_Company()
+  public EReference getContract_Customer()
   {
     return (EReference)contractEClass.getEStructuralFeatures().get(1);
   }
@@ -163,7 +163,7 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
-  public EReference getContract_InsurableObjects()
+  public EReference getContract_Company()
   {
     return (EReference)contractEClass.getEStructuralFeatures().get(2);
   }
@@ -174,9 +174,9 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
-  public EAttribute getContract_Premium()
+  public EReference getContract_InsurableObjects()
   {
-    return (EAttribute)contractEClass.getEStructuralFeatures().get(3);
+    return (EReference)contractEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -185,7 +185,7 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
-  public EAttribute getContract_Increase()
+  public EAttribute getContract_Premium()
   {
     return (EAttribute)contractEClass.getEStructuralFeatures().get(4);
   }
@@ -196,7 +196,7 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
-  public EAttribute getContract_Claim()
+  public EAttribute getContract_Increase()
   {
     return (EAttribute)contractEClass.getEStructuralFeatures().get(5);
   }
@@ -207,9 +207,20 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
-  public EAttribute getContract_Period()
+  public EAttribute getContract_Claim()
   {
     return (EAttribute)contractEClass.getEStructuralFeatures().get(6);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getContract_Period()
+  {
+    return (EAttribute)contractEClass.getEStructuralFeatures().get(7);
   }
 
   /**
@@ -229,7 +240,7 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
-  public EAttribute getCustomer_Name()
+  public EAttribute getCustomer_Address()
   {
     return (EAttribute)customerEClass.getEStructuralFeatures().get(0);
   }
@@ -251,7 +262,7 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
-  public EAttribute getCompany_Name()
+  public EAttribute getCompany_Address()
   {
     return (EAttribute)companyEClass.getEStructuralFeatures().get(0);
   }
@@ -332,6 +343,7 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
 
     // Create classes and their features
     contractEClass = createEClass(CONTRACT);
+    createEAttribute(contractEClass, CONTRACT__NAME);
     createEReference(contractEClass, CONTRACT__CUSTOMER);
     createEReference(contractEClass, CONTRACT__COMPANY);
     createEReference(contractEClass, CONTRACT__INSURABLE_OBJECTS);
@@ -341,10 +353,10 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
     createEAttribute(contractEClass, CONTRACT__PERIOD);
 
     customerEClass = createEClass(CUSTOMER);
-    createEAttribute(customerEClass, CUSTOMER__NAME);
+    createEAttribute(customerEClass, CUSTOMER__ADDRESS);
 
     companyEClass = createEClass(COMPANY);
-    createEAttribute(companyEClass, COMPANY__NAME);
+    createEAttribute(companyEClass, COMPANY__ADDRESS);
 
     insurableObjectsEClass = createEClass(INSURABLE_OBJECTS);
     createEReference(insurableObjectsEClass, INSURABLE_OBJECTS__OBJECTS);
@@ -385,6 +397,7 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
 
     // Initialize classes and features; add operations and parameters
     initEClass(contractEClass, Contract.class, "Contract", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getContract_Name(), ecorePackage.getEString(), "name", null, 0, 1, Contract.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getContract_Customer(), this.getCustomer(), null, "customer", null, 0, 1, Contract.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getContract_Company(), this.getCompany(), null, "company", null, 0, 1, Contract.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getContract_InsurableObjects(), this.getInsurableObjects(), null, "insurableObjects", null, 0, 1, Contract.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -394,10 +407,10 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
     initEAttribute(getContract_Period(), ecorePackage.getEInt(), "period", null, 0, 1, Contract.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(customerEClass, Customer.class, "Customer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getCustomer_Name(), ecorePackage.getEString(), "name", null, 0, 1, Customer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getCustomer_Address(), ecorePackage.getEString(), "address", null, 0, 1, Customer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(companyEClass, Company.class, "Company", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getCompany_Name(), ecorePackage.getEString(), "name", null, 0, 1, Company.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getCompany_Address(), ecorePackage.getEString(), "address", null, 0, 1, Company.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(insurableObjectsEClass, InsurableObjects.class, "InsurableObjects", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getInsurableObjects_Objects(), this.getInsurableObject(), null, "objects", null, 0, -1, InsurableObjects.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

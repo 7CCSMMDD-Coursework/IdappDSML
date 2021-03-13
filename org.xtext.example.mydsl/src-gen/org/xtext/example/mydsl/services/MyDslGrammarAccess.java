@@ -26,39 +26,41 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.MyDsl.Contract");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cContractKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Keyword cParticipatingPartiesKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Keyword cLeftCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
-		private final Assignment cCustomerAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cCustomerCustomerParserRuleCall_4_0 = (RuleCall)cCustomerAssignment_4.eContents().get(0);
-		private final Assignment cCompanyAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final RuleCall cCompanyCompanyParserRuleCall_5_0 = (RuleCall)cCompanyAssignment_5.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
-		private final Assignment cInsurableObjectsAssignment_7 = (Assignment)cGroup.eContents().get(7);
-		private final RuleCall cInsurableObjectsInsurableObjectsParserRuleCall_7_0 = (RuleCall)cInsurableObjectsAssignment_7.eContents().get(0);
-		private final Keyword cTermsKeyword_8 = (Keyword)cGroup.eContents().get(8);
-		private final Keyword cLeftCurlyBracketKeyword_9 = (Keyword)cGroup.eContents().get(9);
-		private final Keyword cPremiumKeyword_10 = (Keyword)cGroup.eContents().get(10);
-		private final Keyword cEqualsSignKeyword_11 = (Keyword)cGroup.eContents().get(11);
-		private final Assignment cPremiumAssignment_12 = (Assignment)cGroup.eContents().get(12);
-		private final RuleCall cPremiumREALParserRuleCall_12_0 = (RuleCall)cPremiumAssignment_12.eContents().get(0);
-		private final Keyword cPremiumIncreaseKeyword_13 = (Keyword)cGroup.eContents().get(13);
-		private final Keyword cEqualsSignKeyword_14 = (Keyword)cGroup.eContents().get(14);
-		private final Assignment cIncreaseAssignment_15 = (Assignment)cGroup.eContents().get(15);
-		private final RuleCall cIncreaseREALParserRuleCall_15_0 = (RuleCall)cIncreaseAssignment_15.eContents().get(0);
-		private final Keyword cClaimKeyword_16 = (Keyword)cGroup.eContents().get(16);
-		private final Keyword cEqualsSignKeyword_17 = (Keyword)cGroup.eContents().get(17);
-		private final Assignment cClaimAssignment_18 = (Assignment)cGroup.eContents().get(18);
-		private final RuleCall cClaimREALParserRuleCall_18_0 = (RuleCall)cClaimAssignment_18.eContents().get(0);
-		private final Keyword cPaymentPeriodKeyword_19 = (Keyword)cGroup.eContents().get(19);
-		private final Keyword cEqualsSignKeyword_20 = (Keyword)cGroup.eContents().get(20);
-		private final Assignment cPeriodAssignment_21 = (Assignment)cGroup.eContents().get(21);
-		private final RuleCall cPeriodINTTerminalRuleCall_21_0 = (RuleCall)cPeriodAssignment_21.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_22 = (Keyword)cGroup.eContents().get(22);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameEStringParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Keyword cParticipatingPartiesKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Keyword cLeftCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cCustomerAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cCustomerCustomerParserRuleCall_5_0 = (RuleCall)cCustomerAssignment_5.eContents().get(0);
+		private final Assignment cCompanyAssignment_6 = (Assignment)cGroup.eContents().get(6);
+		private final RuleCall cCompanyCompanyParserRuleCall_6_0 = (RuleCall)cCompanyAssignment_6.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		private final Assignment cInsurableObjectsAssignment_8 = (Assignment)cGroup.eContents().get(8);
+		private final RuleCall cInsurableObjectsInsurableObjectsParserRuleCall_8_0 = (RuleCall)cInsurableObjectsAssignment_8.eContents().get(0);
+		private final Keyword cTermsKeyword_9 = (Keyword)cGroup.eContents().get(9);
+		private final Keyword cLeftCurlyBracketKeyword_10 = (Keyword)cGroup.eContents().get(10);
+		private final Keyword cPremiumKeyword_11 = (Keyword)cGroup.eContents().get(11);
+		private final Keyword cEqualsSignKeyword_12 = (Keyword)cGroup.eContents().get(12);
+		private final Assignment cPremiumAssignment_13 = (Assignment)cGroup.eContents().get(13);
+		private final RuleCall cPremiumREALParserRuleCall_13_0 = (RuleCall)cPremiumAssignment_13.eContents().get(0);
+		private final Keyword cPremiumIncreaseKeyword_14 = (Keyword)cGroup.eContents().get(14);
+		private final Keyword cEqualsSignKeyword_15 = (Keyword)cGroup.eContents().get(15);
+		private final Assignment cIncreaseAssignment_16 = (Assignment)cGroup.eContents().get(16);
+		private final RuleCall cIncreaseREALParserRuleCall_16_0 = (RuleCall)cIncreaseAssignment_16.eContents().get(0);
+		private final Keyword cClaimKeyword_17 = (Keyword)cGroup.eContents().get(17);
+		private final Keyword cEqualsSignKeyword_18 = (Keyword)cGroup.eContents().get(18);
+		private final Assignment cClaimAssignment_19 = (Assignment)cGroup.eContents().get(19);
+		private final RuleCall cClaimREALParserRuleCall_19_0 = (RuleCall)cClaimAssignment_19.eContents().get(0);
+		private final Keyword cPaymentPeriodKeyword_20 = (Keyword)cGroup.eContents().get(20);
+		private final Keyword cEqualsSignKeyword_21 = (Keyword)cGroup.eContents().get(21);
+		private final Assignment cPeriodAssignment_22 = (Assignment)cGroup.eContents().get(22);
+		private final RuleCall cPeriodINTTerminalRuleCall_22_0 = (RuleCall)cPeriodAssignment_22.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_23 = (Keyword)cGroup.eContents().get(23);
+		private final Keyword cRightCurlyBracketKeyword_24 = (Keyword)cGroup.eContents().get(24);
 		
 		//Contract:
-		//	'Contract' '{'
+		//	'Contract' name=EString '{'
 		//	'ParticipatingParties' '{'
 		//	customer=Customer
 		//	company=Company
@@ -73,7 +75,7 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 		//	'}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'Contract' '{'
+		//'Contract' name=EString '{'
 		//'ParticipatingParties' '{'
 		//customer=Customer
 		//company=Company
@@ -91,112 +93,119 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 		//'Contract'
 		public Keyword getContractKeyword_0() { return cContractKeyword_0; }
 		
+		//name=EString
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		
+		//EString
+		public RuleCall getNameEStringParserRuleCall_1_0() { return cNameEStringParserRuleCall_1_0; }
+		
 		//'{'
-		public Keyword getLeftCurlyBracketKeyword_1() { return cLeftCurlyBracketKeyword_1; }
+		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
 		
 		//'ParticipatingParties'
-		public Keyword getParticipatingPartiesKeyword_2() { return cParticipatingPartiesKeyword_2; }
+		public Keyword getParticipatingPartiesKeyword_3() { return cParticipatingPartiesKeyword_3; }
 		
 		//'{'
-		public Keyword getLeftCurlyBracketKeyword_3() { return cLeftCurlyBracketKeyword_3; }
+		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
 		
 		//customer=Customer
-		public Assignment getCustomerAssignment_4() { return cCustomerAssignment_4; }
+		public Assignment getCustomerAssignment_5() { return cCustomerAssignment_5; }
 		
 		//Customer
-		public RuleCall getCustomerCustomerParserRuleCall_4_0() { return cCustomerCustomerParserRuleCall_4_0; }
+		public RuleCall getCustomerCustomerParserRuleCall_5_0() { return cCustomerCustomerParserRuleCall_5_0; }
 		
 		//company=Company
-		public Assignment getCompanyAssignment_5() { return cCompanyAssignment_5; }
+		public Assignment getCompanyAssignment_6() { return cCompanyAssignment_6; }
 		
 		//Company
-		public RuleCall getCompanyCompanyParserRuleCall_5_0() { return cCompanyCompanyParserRuleCall_5_0; }
+		public RuleCall getCompanyCompanyParserRuleCall_6_0() { return cCompanyCompanyParserRuleCall_6_0; }
 		
 		//'}'
-		public Keyword getRightCurlyBracketKeyword_6() { return cRightCurlyBracketKeyword_6; }
+		public Keyword getRightCurlyBracketKeyword_7() { return cRightCurlyBracketKeyword_7; }
 		
 		//insurableObjects=InsurableObjects
-		public Assignment getInsurableObjectsAssignment_7() { return cInsurableObjectsAssignment_7; }
+		public Assignment getInsurableObjectsAssignment_8() { return cInsurableObjectsAssignment_8; }
 		
 		//InsurableObjects
-		public RuleCall getInsurableObjectsInsurableObjectsParserRuleCall_7_0() { return cInsurableObjectsInsurableObjectsParserRuleCall_7_0; }
+		public RuleCall getInsurableObjectsInsurableObjectsParserRuleCall_8_0() { return cInsurableObjectsInsurableObjectsParserRuleCall_8_0; }
 		
 		//'Terms'
-		public Keyword getTermsKeyword_8() { return cTermsKeyword_8; }
+		public Keyword getTermsKeyword_9() { return cTermsKeyword_9; }
 		
 		//'{'
-		public Keyword getLeftCurlyBracketKeyword_9() { return cLeftCurlyBracketKeyword_9; }
+		public Keyword getLeftCurlyBracketKeyword_10() { return cLeftCurlyBracketKeyword_10; }
 		
 		//'Premium'
-		public Keyword getPremiumKeyword_10() { return cPremiumKeyword_10; }
+		public Keyword getPremiumKeyword_11() { return cPremiumKeyword_11; }
 		
 		//'='
-		public Keyword getEqualsSignKeyword_11() { return cEqualsSignKeyword_11; }
+		public Keyword getEqualsSignKeyword_12() { return cEqualsSignKeyword_12; }
 		
 		//premium=REAL
-		public Assignment getPremiumAssignment_12() { return cPremiumAssignment_12; }
+		public Assignment getPremiumAssignment_13() { return cPremiumAssignment_13; }
 		
 		//REAL
-		public RuleCall getPremiumREALParserRuleCall_12_0() { return cPremiumREALParserRuleCall_12_0; }
+		public RuleCall getPremiumREALParserRuleCall_13_0() { return cPremiumREALParserRuleCall_13_0; }
 		
 		//'PremiumIncrease'
-		public Keyword getPremiumIncreaseKeyword_13() { return cPremiumIncreaseKeyword_13; }
+		public Keyword getPremiumIncreaseKeyword_14() { return cPremiumIncreaseKeyword_14; }
 		
 		//'='
-		public Keyword getEqualsSignKeyword_14() { return cEqualsSignKeyword_14; }
+		public Keyword getEqualsSignKeyword_15() { return cEqualsSignKeyword_15; }
 		
 		//increase=REAL
-		public Assignment getIncreaseAssignment_15() { return cIncreaseAssignment_15; }
+		public Assignment getIncreaseAssignment_16() { return cIncreaseAssignment_16; }
 		
 		//REAL
-		public RuleCall getIncreaseREALParserRuleCall_15_0() { return cIncreaseREALParserRuleCall_15_0; }
+		public RuleCall getIncreaseREALParserRuleCall_16_0() { return cIncreaseREALParserRuleCall_16_0; }
 		
 		//'Claim'
-		public Keyword getClaimKeyword_16() { return cClaimKeyword_16; }
+		public Keyword getClaimKeyword_17() { return cClaimKeyword_17; }
 		
 		//'='
-		public Keyword getEqualsSignKeyword_17() { return cEqualsSignKeyword_17; }
+		public Keyword getEqualsSignKeyword_18() { return cEqualsSignKeyword_18; }
 		
 		//claim=REAL
-		public Assignment getClaimAssignment_18() { return cClaimAssignment_18; }
+		public Assignment getClaimAssignment_19() { return cClaimAssignment_19; }
 		
 		//REAL
-		public RuleCall getClaimREALParserRuleCall_18_0() { return cClaimREALParserRuleCall_18_0; }
+		public RuleCall getClaimREALParserRuleCall_19_0() { return cClaimREALParserRuleCall_19_0; }
 		
 		//'PaymentPeriod'
-		public Keyword getPaymentPeriodKeyword_19() { return cPaymentPeriodKeyword_19; }
+		public Keyword getPaymentPeriodKeyword_20() { return cPaymentPeriodKeyword_20; }
 		
 		//'='
-		public Keyword getEqualsSignKeyword_20() { return cEqualsSignKeyword_20; }
+		public Keyword getEqualsSignKeyword_21() { return cEqualsSignKeyword_21; }
 		
 		//period=INT
-		public Assignment getPeriodAssignment_21() { return cPeriodAssignment_21; }
+		public Assignment getPeriodAssignment_22() { return cPeriodAssignment_22; }
 		
 		//INT
-		public RuleCall getPeriodINTTerminalRuleCall_21_0() { return cPeriodINTTerminalRuleCall_21_0; }
+		public RuleCall getPeriodINTTerminalRuleCall_22_0() { return cPeriodINTTerminalRuleCall_22_0; }
 		
 		//// number of days
 		//'}'
-		public Keyword getRightCurlyBracketKeyword_22() { return cRightCurlyBracketKeyword_22; }
+		public Keyword getRightCurlyBracketKeyword_23() { return cRightCurlyBracketKeyword_23; }
 		
 		//'}'
-		public Keyword getRightCurlyBracketKeyword_23() { return cRightCurlyBracketKeyword_23; }
+		public Keyword getRightCurlyBracketKeyword_24() { return cRightCurlyBracketKeyword_24; }
 	}
 	public class CustomerElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.MyDsl.Customer");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cCustomerAddressKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Keyword cEqualsSignKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cNameEStringParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		private final Assignment cAddressAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cAddressEStringParserRuleCall_2_0 = (RuleCall)cAddressAssignment_2.eContents().get(0);
 		
 		//// Validation IDEA: Claim is always larger than Premium
 		//// Validation IDEA: increase real number has to be between 0 and 1
+		//// Validation IDEA: InsurableObjects should contain at least one object
 		//Customer:
-		//	'CustomerAddress' '=' name=EString;
+		//	'CustomerAddress' '=' address=EString;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'CustomerAddress' '=' name=EString
+		//'CustomerAddress' '=' address=EString
 		public Group getGroup() { return cGroup; }
 		
 		//'CustomerAddress'
@@ -205,25 +214,25 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 		//'='
 		public Keyword getEqualsSignKeyword_1() { return cEqualsSignKeyword_1; }
 		
-		//name=EString
-		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
+		//address=EString
+		public Assignment getAddressAssignment_2() { return cAddressAssignment_2; }
 		
 		//EString
-		public RuleCall getNameEStringParserRuleCall_2_0() { return cNameEStringParserRuleCall_2_0; }
+		public RuleCall getAddressEStringParserRuleCall_2_0() { return cAddressEStringParserRuleCall_2_0; }
 	}
 	public class CompanyElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.MyDsl.Company");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cCompanyAddressKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Keyword cEqualsSignKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cNameEStringParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		private final Assignment cAddressAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cAddressEStringParserRuleCall_2_0 = (RuleCall)cAddressAssignment_2.eContents().get(0);
 		
 		//Company:
-		//	'CompanyAddress' '=' name=EString;
+		//	'CompanyAddress' '=' address=EString;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'CompanyAddress' '=' name=EString
+		//'CompanyAddress' '=' address=EString
 		public Group getGroup() { return cGroup; }
 		
 		//'CompanyAddress'
@@ -232,11 +241,11 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 		//'='
 		public Keyword getEqualsSignKeyword_1() { return cEqualsSignKeyword_1; }
 		
-		//name=EString
-		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
+		//address=EString
+		public Assignment getAddressAssignment_2() { return cAddressAssignment_2; }
 		
 		//EString
-		public RuleCall getNameEStringParserRuleCall_2_0() { return cNameEStringParserRuleCall_2_0; }
+		public RuleCall getAddressEStringParserRuleCall_2_0() { return cAddressEStringParserRuleCall_2_0; }
 	}
 	public class InsurableObjectsElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.MyDsl.InsurableObjects");
@@ -414,7 +423,7 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 
 	
 	//Contract:
-	//	'Contract' '{'
+	//	'Contract' name=EString '{'
 	//	'ParticipatingParties' '{'
 	//	customer=Customer
 	//	company=Company
@@ -437,8 +446,9 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 	
 	//// Validation IDEA: Claim is always larger than Premium
 	//// Validation IDEA: increase real number has to be between 0 and 1
+	//// Validation IDEA: InsurableObjects should contain at least one object
 	//Customer:
-	//	'CustomerAddress' '=' name=EString;
+	//	'CustomerAddress' '=' address=EString;
 	public CustomerElements getCustomerAccess() {
 		return pCustomer;
 	}
@@ -448,7 +458,7 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 	}
 	
 	//Company:
-	//	'CompanyAddress' '=' name=EString;
+	//	'CompanyAddress' '=' address=EString;
 	public CompanyElements getCompanyAccess() {
 		return pCompany;
 	}

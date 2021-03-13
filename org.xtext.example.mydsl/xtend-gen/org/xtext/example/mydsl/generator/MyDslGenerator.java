@@ -3,10 +3,15 @@
  */
 package org.xtext.example.mydsl.generator;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.xtext.example.mydsl.myDsl.Contract;
+import org.xtext.example.mydsl.myDsl.InsurableObjects;
 
 /**
  * Generates code from your model files on save.
@@ -17,5 +22,168 @@ import org.eclipse.xtext.generator.IGeneratorContext;
 public class MyDslGenerator extends AbstractGenerator {
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
+    EObject _head = IterableExtensions.<EObject>head(resource.getContents());
+    final Contract model = ((Contract) _head);
+    fsa.generateFile(this.getTargetFileName(resource), 
+      this.doGenerateContract(model));
+  }
+  
+  public String getTargetFileName(final Resource resource) {
+    String _xblockexpression = null;
+    {
+      final String originalFileName = resource.getURI().lastSegment();
+      String _substring = originalFileName.substring(0, originalFileName.indexOf("."));
+      _xblockexpression = (_substring + ".sol");
+    }
+    return _xblockexpression;
+  }
+  
+  public String doGenerateContract(final Contract contract) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("pragma solidity ^0.4.15");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("contract ");
+    String _name = contract.getName();
+    _builder.append(_name);
+    _builder.append(" {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    final String customerAddress = contract.getCustomer().getAddress();
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    final String companyAddress = contract.getCompany().getAddress();
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    final InsurableObjects insurableObjects = contract.getInsurableObjects();
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    final float premium = contract.getPremium();
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    final float premiumIncrease = contract.getIncrease();
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    final float claim = contract.getClaim();
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    final int paymentPeriod = contract.getPeriod();
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("address public customerAddress = ");
+    _builder.append(customerAddress, "\t");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("address public companyAddress = ");
+    _builder.append(companyAddress, "\t");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("uint256 public premium = ");
+    _builder.append(premium, "\t");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("uint256 public premiumIncrease = ");
+    _builder.append(premiumIncrease, "\t");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("uint256 public claim = ");
+    _builder.append(claim, "\t");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("uint256 public paymentPeriod = ");
+    _builder.append(paymentPeriod, "\t");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("uint256 public numAccidents = 0;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("uint256 public lastPayment;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("constructor() public payable {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("require(msg.value == getPremium(customerAddress));");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("lastPayment = now;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("function getPremium(address customer) constant public returns (uint256 premium) {");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("return ((numAccidents * premiumIncrease) + 1) * premium;");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("function pay() public payable {");
+    _builder.newLine();
+    _builder.append("    \t");
+    _builder.append("require(msg.sender == customerAddress);");
+    _builder.newLine();
+    _builder.append("    \t");
+    _builder.append("require(msg.value == getPremium(customerAddress));");
+    _builder.newLine();
+    _builder.append("    \t");
+    _builder.append("companyAddress.transfer(msg.value)");
+    _builder.newLine();
+    _builder.append("    \t");
+    _builder.append("lastPayment = now;");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("function claim() public payable {");
+    _builder.newLine();
+    _builder.append("    \t");
+    _builder.append("customerAddress.transfer(claim);");
+    _builder.newLine();
+    _builder.append("    \t");
+    _builder.append("numAccidents++;");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder.toString();
   }
 }

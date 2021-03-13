@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.example.mydsl.myDsl.Contract#getName <em>Name</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.myDsl.Contract#getCustomer <em>Customer</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.myDsl.Contract#getCompany <em>Company</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.myDsl.Contract#getInsurableObjects <em>Insurable Objects</em>}</li>
@@ -29,6 +30,28 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Contract extends EObject
 {
+  /**
+   * Returns the value of the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Name</em>' attribute.
+   * @see #setName(String)
+   * @see org.xtext.example.mydsl.myDsl.MyDslPackage#getContract_Name()
+   * @model
+   * @generated
+   */
+  String getName();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.myDsl.Contract#getName <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Name</em>' attribute.
+   * @see #getName()
+   * @generated
+   */
+  void setName(String value);
+
   /**
    * Returns the value of the '<em><b>Customer</b></em>' containment reference.
    * <!-- begin-user-doc -->
