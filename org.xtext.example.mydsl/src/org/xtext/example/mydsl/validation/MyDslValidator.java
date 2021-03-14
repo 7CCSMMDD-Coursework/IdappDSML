@@ -3,6 +3,10 @@
  */
 package org.xtext.example.mydsl.validation;
 
+import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.validation.CheckType;
+import org.xtext.example.mydsl.myDsl.Contract;
+import org.xtext.example.mydsl.myDsl.MyDslPackage;
 
 /**
  * This class contains custom validation rules. 
@@ -11,15 +15,39 @@ package org.xtext.example.mydsl.validation;
  */
 public class MyDslValidator extends AbstractMyDslValidator {
 	
-//	public static final String INVALID_NAME = "invalidName";
-//
-//	@Check
-//	public void checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.getName().charAt(0))) {
-//			warning("Name should start with a capital",
-//					MyDslPackage.Literals.GREETING__NAME,
-//					INVALID_NAME);
-//		}
-//	}
+	public static final String INVALID_CLAIM = "claim lower than premium";
+	public static final String INVALID_PREMIUM_INCREASE = "invalid premium increase";
+	public static final String INVALID_PAYMENT_PERIOD = "invalid payment period";
+	
+	@Check(CheckType.NORMAL)
+	public void checkClaimLargerThanPremium(Contract contract) {
+		float claim = contract.getClaim();
+		float premium = contract.getPremium();
+		
+		if (premium > claim) {
+			warning("Customer claim needs to be grater than premium paid",
+					MyDslPackage.Literals.CONTRACT__CLAIM, INVALID_CLAIM);
+		}
+	}
+	
+	@Check(CheckType.NORMAL)
+	public void checkIncreaseIsBetweenZeroAndOne(Contract contract) {
+		float premiumIncrease = contract.getIncrease();
+		
+		if (premiumIncrease < 0.0 || premiumIncrease > 1.0) {
+			warning("Premium increase needs to be a value between 0.0 and 1.0",
+					MyDslPackage.Literals.CONTRACT__INCREASE, INVALID_PREMIUM_INCREASE);
+		}
+	}
+	
+	@Check(CheckType.NORMAL)
+	public void checkPremiumPeriodIsNotZero(Contract contract) {
+		int premiumPeriod = contract.getPeriod();
+		
+		if (premiumPeriod <= 0) {
+			warning("Premium period needs to be greater than 0",
+					MyDslPackage.Literals.CONTRACT__PERIOD, INVALID_PAYMENT_PERIOD);
+		}
+	}
 	
 }

@@ -198,7 +198,7 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 		private final Assignment cAddressAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cAddressEStringParserRuleCall_2_0 = (RuleCall)cAddressAssignment_2.eContents().get(0);
 		
-		//// Validation IDEA: Claim is always larger than Premium
+		//// Validation IDEA: Claim is always larger than Premium (done)
 		//// Validation IDEA: increase real number has to be between 0 and 1
 		//// Validation IDEA: InsurableObjects should contain at least one object
 		//Customer:
@@ -444,7 +444,7 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 		return getContractAccess().getRule();
 	}
 	
-	//// Validation IDEA: Claim is always larger than Premium
+	//// Validation IDEA: Claim is always larger than Premium (done)
 	//// Validation IDEA: increase real number has to be between 0 and 1
 	//// Validation IDEA: InsurableObjects should contain at least one object
 	//Customer:

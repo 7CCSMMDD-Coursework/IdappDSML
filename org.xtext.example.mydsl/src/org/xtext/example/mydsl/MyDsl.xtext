@@ -23,7 +23,7 @@ Contract:
 	'}'
 ;
 
-// Validation IDEA: Claim is always larger than Premium
+// Validation IDEA: Claim is always larger than Premium (done)
 // Validation IDEA: increase real number has to be between 0 and 1
 // Validation IDEA: InsurableObjects should contain at least one object
 
