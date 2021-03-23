@@ -11,7 +11,7 @@ Contract:
 	
 	'and' customers+=Customer( "," customers+=Customer)*
 		 
-	'for' insurableObjects+=InsurableObject ( "," insurableObjects+=InsurableObject)* 'owned by' owner=[Customer|ADDRESS]
+	'for' insurableObjects+=InsurableObject ( "," insurableObjects+=InsurableObject)*
 	
 	'Terms' '{'
 		paymentTerm=PaymentTerm
@@ -62,7 +62,7 @@ Company:
 
 
 InsurableObject:
-	'object' name=EString
+	'object' name=EString ('owned by' owner=[Customer|ADDRESS])?
 ;
 
 terminal ADDRESS returns ecore::EString:

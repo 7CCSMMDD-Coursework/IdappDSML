@@ -15,6 +15,7 @@ import org.xtext.example.mydsl.myDsl.MyDslPackage;
  */
 public class MyDslValidator extends AbstractMyDslValidator {
 	
+	/*
 	public static final String INVALID_CLAIM = "claim lower than premium";
 	public static final String INVALID_PREMIUM_INCREASE = "invalid premium increase";
 	public static final String INVALID_PAYMENT_PERIOD = "invalid payment period";
@@ -30,15 +31,17 @@ public class MyDslValidator extends AbstractMyDslValidator {
 		}
 	}
 	
+	
 	@Check(CheckType.NORMAL)
 	public void checkIncreaseIsBetweenZeroAndOne(Contract contract) {
 		float premiumIncrease = contract.getPaymentTerm().getIncrease();
 		
 		if (premiumIncrease < 0.0 || premiumIncrease > 1.0) {
 			error("Premium increase needs to be a value between 0.0 and 1.0",
-					MyDslPackage.Literals.PAYMENT_TERM__INCREASE, INVALID_PREMIUM_INCREASE);
+					MyDslPackage.Literals.CONTRACT__NAME, INVALID_PREMIUM_INCREASE);
 		}
 	}
+	
 	
 	@Check(CheckType.NORMAL)
 	public void checkPremiumPeriodIsNotZero(Contract contract) {
@@ -48,7 +51,8 @@ public class MyDslValidator extends AbstractMyDslValidator {
 			error("Premium period needs to be greater than 0",
 					MyDslPackage.Literals.PAYMENT_TERM__PERIOD, INVALID_PAYMENT_PERIOD);
 		}
-	} 
+	}
+	*/ 
 	
 	//iterate over customers and sum Cost and Claim Participance percentages. Check they are equal to 100% 
 	
