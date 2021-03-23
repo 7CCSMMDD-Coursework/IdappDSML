@@ -8,6 +8,9 @@ import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import org.xtext.example.mydsl.myDsl.Contract
+import org.xtext.example.mydsl.myDsl.ContractCancellationTerm
+import org.xtext.example.mydsl.myDsl.ClaimReductionTerm
+import org.xtext.example.mydsl.myDsl.PremiumIncreaseTerm
 
 /**
  * Generates code from your model files on save.
@@ -18,9 +21,7 @@ class MyDslGenerator extends AbstractGenerator {
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		val model = resource.contents.head as Contract
-		fsa.generateFile(resource.targetFileName,
-				model.doGenerateContract
-		)
+		fsa.generateFile(resource.targetFileName, model.doGenerate)
 	}
 	
 	def String getTargetFileName(Resource resource) {
@@ -28,56 +29,99 @@ class MyDslGenerator extends AbstractGenerator {
 		originalFileName.substring(0, originalFileName.indexOf(".")) + ".sol";
 	}
 	
-	def String doGenerateContract(Contract contract) {
+	//TODO handle default values for not provided attributes
+	def String doGenerate(Contract contract) {
 		'''
 		pragma solidity ^0.4.15
 		
 		contract «contract.name» {
 			
-			«val customerAddress = contract.customer.address»
-			«val companyAddress = contract.company.address»
+			«val companyAddress = contract.company.name»
 			«val insurableObjects = contract.insurableObjects»
-			«val premium = contract.premium»
-			«val premiumIncrease = contract.increase»
-			«val claim = contract.claim»
-			«val paymentPeriod = contract.period»
+			«val premium = contract.paymentTerm.premium»
+			«val premiumIncrease = contract.paymentTerm.increase»
+			«val claim = contract.claimTerm.claim»
+			«val paymentPeriod = contract.paymentTerm.period»
 			
-			address public customerAddress = «customerAddress»;
-			
-			address public companyAddress = «companyAddress»;
-			
-			uint256 public premium = «premium»;
-			
-			uint256 public premiumIncrease = «premiumIncrease»;
-			
-			uint256 public claim = «claim»;
-			
+			address public companyAddress = «companyAddress»;			
+			uint256 public premium = «premium»;			
+			uint256 public premiumIncrease = «premiumIncrease»;			
+			uint256 public claim = «claim»;			
 			uint256 public paymentPeriod = «paymentPeriod»;
 			
-			uint256 public numAccidents = 0;
-			
+			uint256 public numAccidents = 0;			
 			uint256 public lastPayment;
 			
-			constructor() public payable {
-				require(msg.value == getPremium(customerAddress));
-				lastPayment = now;
-			}
+			«IF contract.customers.size == 1»
+			«val customerAddress = contract.customers.get(0).name»
+			address public customerAddress = «customerAddress»;
+			«ELSE»
+			address[] public customerAddresses = [«contract.customers.forEach[name]»]
+			«ENDIF»
+						
+			«contract.generateConstructor»
 			
-		    function getPremium(address customer) constant public returns (uint256 premium) {
-		        return ((numAccidents * premiumIncrease) + 1) * premium;
-		    }
-		    
-		    function pay() public payable {
-		    	require(msg.sender == customerAddress);
-		    	require(msg.value == getPremium(customerAddress));
-		    	companyAddress.transfer(msg.value)
-		    	lastPayment = now;
-		    }
-		    
-		    function claim() public payable {
-		    	customerAddress.transfer(claim);
-		    	numAccidents++;
-		    }
+			«contract.generatePremiumFunction»
+			
+			«contract.generatePaymentFunction»
+			
+			«contract.generateClaimFunction»
+			
+			«contract.violationTerms.map[handleViolationTerms].join("\n")»
+			
+		}
+		'''
+	}
+
+
+	//TODO initialize violation variables and create corresponding methods to alter them
+	dispatch def String handleViolationTerms(ContractCancellationTerm violationTerm){
+		'''Dummy text'''
+	}
+	
+	dispatch def String handleViolationTerms(ClaimReductionTerm violationTerm){
+		'''Dummy text'''
+	}
+	
+	dispatch def String handleViolationTerms(PremiumIncreaseTerm violationTerm){
+		'''Dummy text'''
+	}
+
+
+	//TODO dynamically create method bodies based on contract type
+	def String generateConstructor(Contract contract){
+		'''
+		constructor() public payable {
+			require(msg.value == getPremium(customerAddress));
+			lastPayment = now;
+		}
+		'''
+	}
+	
+	def String generatePremiumFunction(Contract contract){
+		'''
+		function getPremium(address customer) constant public returns (uint256 premium) {
+			return ((numAccidents * premiumIncrease) + 1) * premium;
+		}
+		'''
+	}
+	
+	def String generatePaymentFunction(Contract contract){
+		'''
+		function pay() public payable {
+			require(msg.sender == customerAddress);
+			require(msg.value == getPremium(customerAddress));
+			companyAddress.transfer(msg.value)
+			lastPayment = now;
+		}
+		'''
+	}
+	
+	def String generateClaimFunction(Contract contract){
+		'''
+		function claim() public payable {
+			customerAddress.transfer(claim);
+			numAccidents++;
 		}
 		'''
 	}

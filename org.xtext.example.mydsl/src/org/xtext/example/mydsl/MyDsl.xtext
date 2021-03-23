@@ -5,44 +5,68 @@ generate myDsl "http://www.xtext.org/example/mydsl/MyDsl"
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
 Contract:
-	'Contract' name=EString '{'
+	type=ContractType 'contract' name=EString 'between'
 		
-		'ParticipatingParties' '{'
-			customer=Customer
-			company=Company
-		'}'
-		
-		insurableObjects=InsurableObjects
-		
-		'Terms' '{'
-			'Premium' '=' premium=REAL
-			'PremiumIncrease' '=' increase=REAL
-			'Claim' '=' claim=REAL
-			'PaymentPeriod' '=' period=INT // number of days
-		'}'
-	'}'
+	'company' company=Company
+	
+	'and' customers+=Customer( "," customers+=Customer)*
+		 
+	'for' insurableObjects+=InsurableObject ( "," insurableObjects+=InsurableObject)* 'owned by' owner=[Customer|ADDRESS]
+	
+	'Terms' '{'
+		paymentTerm=PaymentTerm
+		claimTerm=ClaimTerm
+		('Upon violation' violationTerms+=ViolationTerm ( "," violationTerms+=ViolationTerm)*)?
+	'}'	
 ;
 
-// Validation IDEA: Claim is always larger than Premium (done)
-// Validation IDEA: increase real number has to be between 0 and 1
-// Validation IDEA: InsurableObjects should contain at least one object
+enum ContractType:
+	personal | group | family
+;
+
+enum Coverage:
+	beneficiary | owner
+;
+
+PaymentTerm:
+	premium=REAL 'payable every' period=INT 'days' increase=REAL'%' 'increase per accident'
+;
+
+ClaimTerm:
+	claim=REAL 'with claimer' claimer=[Customer|ADDRESS]
+;
+
+ViolationTerm:
+	ContractCancellationTerm | ClaimReductionTerm | PremiumIncreaseTerm
+;
+
+ContractCancellationTerm:
+	 cancelled?='cancelled'
+;
+
+ClaimReductionTerm:
+	'claim reduced by' claimReduction=REAL'%'
+;
+
+PremiumIncreaseTerm:
+	'premium increased by' premiumIncrease=REAL'%'
+;
 
 Customer:
-	'CustomerAddress' '=' address=EString
+	'customer with address' name=ADDRESS ('is' coverage=Coverage)? ('participates' costParticipance=REAL '%')? ('claims' claimParticipance=REAL '%')?
 ;
 
 Company:
-	'CompanyAddress' '=' address=EString
+	'with address' name=ADDRESS
 ;
 
-InsurableObjects:
-	'InsurableObjects' '{'
-		objects+=InsurableObject ( "," objects+=InsurableObject)*
-	'}'
-;
 
 InsurableObject:
-	'ObjectName' '=' name=EString
+	'object' name=EString
+;
+
+terminal ADDRESS returns ecore::EString:
+	'0x'('a'..'z'|'A'..'Z'|'0'..'9')+
 ;
 
 REAL returns ecore::EFloat hidden():
