@@ -25,7 +25,7 @@ public class MyDslValidator extends AbstractMyDslValidator {
 		float premium = contract.getPaymentTerm().getPremium();
 		
 		if (premium > claim) {
-			warning("Customer claim needs to be greater than premium paid",
+			error("Customer claim needs to be greater than premium paid",
 					MyDslPackage.Literals.CLAIM_TERM__CLAIM, INVALID_CLAIM);
 		}
 	}
@@ -35,7 +35,7 @@ public class MyDslValidator extends AbstractMyDslValidator {
 		float premiumIncrease = contract.getPaymentTerm().getIncrease();
 		
 		if (premiumIncrease < 0.0 || premiumIncrease > 1.0) {
-			warning("Premium increase needs to be a value between 0.0 and 1.0",
+			error("Premium increase needs to be a value between 0.0 and 1.0",
 					MyDslPackage.Literals.PAYMENT_TERM__INCREASE, INVALID_PREMIUM_INCREASE);
 		}
 	}
@@ -45,7 +45,7 @@ public class MyDslValidator extends AbstractMyDslValidator {
 		int premiumPeriod = contract.getPaymentTerm().getPeriod();
 		
 		if (premiumPeriod <= 0) {
-			warning("Premium period needs to be greater than 0",
+			error("Premium period needs to be greater than 0",
 					MyDslPackage.Literals.PAYMENT_TERM__PERIOD, INVALID_PAYMENT_PERIOD);
 		}
 	} 
