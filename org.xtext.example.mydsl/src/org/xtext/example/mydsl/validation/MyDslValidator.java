@@ -54,11 +54,13 @@ public class MyDslValidator extends AbstractMyDslValidator {
 	}
 	*/ 
 	
-	//iterate over customers and sum Cost and Claim Participance percentages. Check they are equal to 100% 
+	//iterate over customers and sum participation percentages. Check they are equal to 100% 
 	
-	//if contract type is personal then check that there exists only one customer - default to owner in the generator
+	//if contract type is personal then check that there exists only one customer. 
+	//His participation is optional in this case and should default to 100%
 	
-	//if contract type is family. Then there needs to be one owner and one or more beneficiaries. Sum of Claims for beneficiaries has to be 100%
+	//If contract type is family. Then there needs to be ONE owner and one or more beneficiaries. 
+	//No participation will be specified. We will just divide the claim among the beneficiaries
 	
-	//if contact type is pool then there should be more than one owners and their sum of claims has to be 100%
+	//if contact type is pool then there should be more than one owners and their sum of participation has to be 100%
 }
