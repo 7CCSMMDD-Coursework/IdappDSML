@@ -53,7 +53,7 @@ PremiumIncreaseTerm:
 ;
 
 Customer:
-	'customer with address' name=ADDRESS ('is' coverage=Coverage)? ('participates with' costParticipance=REAL '%')?
+	'customer with address' name=ADDRESS ('is' coverage=Coverage)? ('participates with' participation=REAL '%')?
 ;
 
 Company:
