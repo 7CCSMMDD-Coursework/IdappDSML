@@ -11,6 +11,7 @@ import org.xtext.example.mydsl.myDsl.Contract
 import org.xtext.example.mydsl.myDsl.ContractCancellationTerm
 import org.xtext.example.mydsl.myDsl.ClaimReductionTerm
 import org.xtext.example.mydsl.myDsl.PremiumIncreaseTerm
+import org.xtext.example.mydsl.myDsl.ContractType
 
 /**
  * Generates code from your model files on save.
@@ -56,7 +57,7 @@ class MyDslGenerator extends AbstractGenerator {
 			«val customerAddress = contract.customers.get(0).name»
 			address public customerAddress = «customerAddress»;
 			«ELSE»
-			address[] public customerAddresses = [«contract.customers.forEach[name]»]
+			address[] public customerAddresses = [«contract.customers.map[name].join(",")»]
 			«ENDIF»
 						
 			«contract.generateConstructor»
@@ -90,13 +91,42 @@ class MyDslGenerator extends AbstractGenerator {
 
 	//TODO dynamically create method bodies based on contract type
 	def String generateConstructor(Contract contract){
+		
+		val signature_start = "constructor() public payable {\n"
+		val signature_end = "}"	
+		
+		var body = 	
+			switch(contract.type) {		 
+				case ContractType.PERSONAL : getContructorPersonal(contract)
+				case ContractType.FAMILY : getContructorFamily(contract)					
+				case ContractType.POOL : getContructorPool(contract)					
+				default : ""			
+			}
+		
+		return signature_start.concat(body).concat(signature_end);
+	}
+	
+	
+	def String getContructorPersonal(Contract contract){
 		'''
-		constructor() public payable {
-			require(msg.value == getPremium(customerAddress));
-			lastPayment = now;
-		}
+		require(msg.value == getPremium1(customerAddress));
+		lastPayment = now;					
 		'''
 	}
+	
+	def String getContructorFamily(Contract contract){
+		'''
+		require(msg.value == getPremium1(customerAddress));
+		lastPayment = now;					
+		'''
+	}
+	def String getContructorPool(Contract contract){
+		'''
+		require(msg.value == getPremium1(customerAddress));
+		lastPayment = now;					
+		'''
+	}
+	
 	
 	def String generatePremiumFunction(Contract contract){
 		'''

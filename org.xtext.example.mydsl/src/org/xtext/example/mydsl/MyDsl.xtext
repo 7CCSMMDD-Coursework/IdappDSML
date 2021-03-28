@@ -29,11 +29,11 @@ enum Coverage:
 ;
 
 PaymentTerm:
-	premium=REAL 'payable every' period=INT 'days' increase=REAL'%' 'increase per accident'
+	'Amount of' premium=REAL 'payable every' period=INT 'days' increase=REAL'%' 'increase per accident'
 ;
 
 ClaimTerm:
-	claim=REAL 'with claimer' claimer=[Customer|ADDRESS]
+	'Amount of' claim=REAL 'with claimer' claimer=[Customer|ADDRESS]
 ;
 
 ViolationTerm:
