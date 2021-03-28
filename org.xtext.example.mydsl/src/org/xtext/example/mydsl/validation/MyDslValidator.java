@@ -3,9 +3,15 @@
  */
 package org.xtext.example.mydsl.validation;
 
+import java.util.List;
+
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
 import org.xtext.example.mydsl.myDsl.Contract;
+import org.xtext.example.mydsl.myDsl.ContractType;
+import org.xtext.example.mydsl.myDsl.Coverage;
+import org.xtext.example.mydsl.myDsl.Customer;
+import org.xtext.example.mydsl.myDsl.InsurableObject;
 import org.xtext.example.mydsl.myDsl.MyDslPackage;
 
 /**
@@ -15,6 +21,8 @@ import org.xtext.example.mydsl.myDsl.MyDslPackage;
  */
 public class MyDslValidator extends AbstractMyDslValidator {
 	
+	public static final String INVALID_CUSTOMER_PARTICIPATION = 
+			"Invalid customer participation in contract; total must be 100%";
 	/*
 	public static final String INVALID_CLAIM = "claim lower than premium";
 	public static final String INVALID_PREMIUM_INCREASE = "invalid premium increase";
@@ -54,13 +62,94 @@ public class MyDslValidator extends AbstractMyDslValidator {
 	}
 	*/ 
 	
-	//iterate over customers and sum participation percentages. Check they are equal to 100% 
+	/**
+	 * Iterate over customers and sum participation percentages. Check they are equal to 100%.
+	 * 
+	 * Only applicable to pool contracts.
+	 * 
+	 * @param contract
+	 */
+	@Check(CheckType.NORMAL)
+	public void checkCustomerParticipationIsOneHundredProcentForPoolContract(Contract contract) {
+		if (contract.getType() == ContractType.POOL) {
+			double totalCustomerParticipation = 0.0;
+			
+			List<Customer> customers = contract.getCustomers();
+			for (Customer c : customers) {
+				totalCustomerParticipation += c.getParticipation();
+			}
+			
+			if (totalCustomerParticipation != 100.0) {
+				error("Invalid customer participation; must be 100%; but is " + totalCustomerParticipation, null);
+			}
+		}
+	}
 	
-	//if contract type is personal then check that there exists only one customer. 
-	//His participation is optional in this case and should default to 100%
 	
-	//If contract type is family. Then there needs to be ONE owner and one or more beneficiaries. 
-	//No participation will be specified. We will just divide the claim among the beneficiaries
+	/**
+	 * if contract type is personal then check that there exists only one customer.
+	 * 
+	 * His participation is optional in this case and should default to 100%
+	 * 
+	 *  @param contract
+	 */
+	@Check(CheckType.NORMAL)
+	public void checkParticipationTypeOptionalAndFullForPersonalContract(Contract contract) {
+		if (contract.getType() == ContractType.PERSONAL) {
+			
+			if (contract.getCustomers().size() != 1) {
+				error("Personal contract needs to have only one customer", null);
+			}
+			
+			Customer customer = contract.getCustomers().get(0);
+			
+			// Not sure if this check is okay, it still cannot detect if the 
+			// 'participates with 0.0%' is written (this should be invalid).
+			if (customer.getParticipation() != 100.0 && customer.getParticipation() != 0.0) {
+				error("Personal contract: if participation is specified, then it should be 100%", null);
+			}
+		}
+	}
 	
-	//if contact type is pool then there should be more than one owners and their sum of participation has to be 100%
+	/**
+	 * If contract type is family. Then there needs to be ONE owner and one or more beneficiaries.
+	 * 
+	 * No participation will be specified. We will just divide the claim among the beneficiaries.
+	 * 
+	 * @param contract
+	 */
+	@Check(CheckType.NORMAL)
+	public void checkFamilyContractToHaveParticipationOneHundredProcent(Contract contract) {
+		if (contract.getType() == ContractType.FAMILY) {
+			
+			List<Customer> customers = contract.getCustomers();
+			
+			Customer owner = null;
+			boolean oneOwner = false;
+			for (Customer c : customers) {
+				if (c.getCoverage() == Coverage.OWNER) {
+					if (owner != null) {
+						owner = c;
+						oneOwner = true;
+					}else if (oneOwner == true) {
+						error("There can only be one owner of a family contract", null);
+					}
+				}
+				
+				if (c.getParticipation() != 0.0) {
+					error("No participation needs to be specified for famliy contracts;"
+							+ "Sum is split equally among the beneficiaries", null);
+				}
+			}
+			
+			customers.remove(owner);
+			
+			if (customers.size() == 0) {
+				error("There must be at least one beneficiary for a family contract", null);
+			}
+			
+		}
+	}
+	
+	//if contact type is pool then there should be more than one owners and their sum of participation has to be 100% -- DONE
 }
