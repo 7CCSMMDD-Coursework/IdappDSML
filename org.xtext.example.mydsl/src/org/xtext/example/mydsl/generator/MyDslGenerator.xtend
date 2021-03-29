@@ -93,7 +93,7 @@ class MyDslGenerator extends AbstractGenerator {
 	def String generateConstructor(Contract contract){
 		
 		val signature_start = "constructor() public payable {\n"
-		val signature_end = "}"	
+		val signature_end = "\n}\n"	
 		
 		var body = 	
 			switch(contract.type) {		 
