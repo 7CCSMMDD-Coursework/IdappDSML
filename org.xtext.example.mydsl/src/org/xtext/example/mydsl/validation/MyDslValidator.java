@@ -4,6 +4,7 @@
 package org.xtext.example.mydsl.validation;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
@@ -101,13 +102,16 @@ public class MyDslValidator extends AbstractMyDslValidator {
 				error("Personal contract needs to have only one customer", null);
 			}
 			
-			Customer customer = contract.getCustomers().get(0);
+			
 			
 			// Not sure if this check is okay, it still cannot detect if the 
 			// 'participates with 0.0%' is written (this should be invalid).
-			if (customer.getParticipation() != 100.0 && customer.getParticipation() != 0.0) {
-				error("Personal contract: if participation is specified, then it should be 100%", null);
-			}
+			
+			//NOT NEEDED.
+			//Customer customer = contract.getCustomers().get(0);
+			//if (customer.getParticipation() != 100.0 && customer.getParticipation() != 0.0) {
+			//	error("Personal contract: if participation is specified, then it should be 100%", null);
+			//}
 		}
 	}
 	
@@ -118,6 +122,7 @@ public class MyDslValidator extends AbstractMyDslValidator {
 	 * 
 	 * @param contract
 	 */
+	
 	@Check(CheckType.NORMAL)
 	public void checkFamilyContractToHaveParticipationOneHundredProcent(Contract contract) {
 		if (contract.getType() == ContractType.FAMILY) {
@@ -136,19 +141,54 @@ public class MyDslValidator extends AbstractMyDslValidator {
 					}
 				}
 				
+				// this should not be throwing an error. Changed it to a warning
 				if (c.getParticipation() != 0.0) {
-					error("No participation needs to be specified for famliy contracts;"
+					warning("No participation needs to be specified for famliy contracts;"
 							+ "Sum is split equally among the beneficiaries", null);
 				}
 			}
 			
 			customers.remove(owner);
 			
+			// did we say that?
 			if (customers.size() == 0) {
 				error("There must be at least one beneficiary for a family contract", null);
 			}
 			
 		}
+	}
+
+	
+	/**
+	 * An alternative way to format the family checks using streams
+	 * 
+	 * String comparison now performed using the equals method.
+	 * 
+	 * @param contract
+	 */
+	@Check(CheckType.NORMAL)
+	public void checkFamilyContractCoverage(Contract contract) {
+
+		if(ContractType.FAMILY.equals(contract.getType())){
+			
+			//beneficiary is the default value so this will always pass.
+			boolean benExists = contract.getCustomers()
+					.stream()
+				    .anyMatch(c -> Coverage.BENEFICIARY.equals(c.getCoverage()));
+			
+			if(!benExists)
+				error("Family Contracts need to have at least one beneficiary", null);
+			
+			
+			int ownerCount = (int) contract.getCustomers()
+					.stream()
+				    .filter(c -> Coverage.OWNER.equals(c.getCoverage()))
+				    .count();
+			
+			if(ownerCount != 1)
+				error("Family Contracts need to have at least one owner", null);
+			
+		}		
 	}
 	
 	//if contact type is pool then there should be more than one owners and their sum of participation has to be 100% -- DONE
