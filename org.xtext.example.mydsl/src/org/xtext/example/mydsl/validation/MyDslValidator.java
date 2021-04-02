@@ -14,6 +14,7 @@ import org.xtext.example.mydsl.myDsl.Coverage;
 import org.xtext.example.mydsl.myDsl.Customer;
 import org.xtext.example.mydsl.myDsl.InsurableObject;
 import org.xtext.example.mydsl.myDsl.MyDslPackage;
+import org.xtext.example.mydsl.myDsl.PaymentTerm;
 
 /**
  * This class contains custom validation rules. 
@@ -22,44 +23,76 @@ import org.xtext.example.mydsl.myDsl.MyDslPackage;
  */
 public class MyDslValidator extends AbstractMyDslValidator {
 	
+	public static final String INVALID_CLAIM = 
+			"Customer claim is lower than premium; should be greater";
+	public static final String INVALID_PREMIUM_INCREASE = 
+			"Invalid premium increase value; must be between 0.0 and 100.0";
+	public static final String INVALID_PAYMENT_PERIOD = 
+			"Invalid payment period; msut be greater than 0";
 	public static final String INVALID_CUSTOMER_PARTICIPATION = 
 			"Invalid customer participation in contract; total must be 100%";
+	public static final String INVALID_CUSTOMER_NUMBER_PERSONAL = 
+			"Invalid customer number; must be 1 for personal contract";
+	public static final String UNNECESSARY_PARTICIPATION_SPECIFICATION_PERSONAL_FAMILY =
+			"Participation specification is not requred for personal or family contracts";
+	public static final String UNSPECIFIED_OWNER_FOR_FAMILY_CONTRACT =
+			"Family contracts need to have one, and only one owner";
+	public static final String UNSPECIFIED_BENEFICIARIES_FOR_FAMILY_CONTRACT = 
+			"Family contracts need to have at least one beneficiary";
+	public static final String UNSPECIFIED_OWNERSHIP_FOR_POOL_CONTRACT_CUSTOMERS =
+			"Every pool contract customer must be an owner";
 	
-	public static final String INVALID_CLAIM = "claim lower than premium";
-	public static final String INVALID_PREMIUM_INCREASE = "invalid premium increase";
-	public static final String INVALID_PAYMENT_PERIOD = "invalid payment period";
-	
+	/**
+	 * Check if customer claim is greater than premium paid.
+	 * 
+	 * No contract where the claim is less than the premium should be
+	 * allowed.
+	 * 
+	 * @param contract
+	 */
 	@Check(CheckType.NORMAL)
 	public void checkClaimLargerThanPremium(Contract contract) {
 		float claim = contract.getClaimTerm().getClaim();
 		float premium = contract.getPaymentTerm().getPremium();
 		
-		if (premium > claim) {
-			error("Customer claim needs to be greater than premium paid",
-					MyDslPackage.Literals.CLAIM_TERM__CLAIM, INVALID_CLAIM);
-		}
+		if (premium > claim)
+			error("Customer claim needs to be greater than premium paid", contract, 
+					MyDslPackage.Literals.CONTRACT__CLAIM_TERM, INVALID_CLAIM);
+
 	}
 	
-	
+	/**
+	 * Payment term premium increase must be between 0.0% and 100.0%.
+	 * 
+	 * This increase applies only if a claim has been made.
+	 * 
+	 * @param paymentTerm
+	 */
 	@Check(CheckType.NORMAL)
-	public void checkIncreaseIsBetweenZeroAndOne(Contract contract) {
-		float premiumIncrease = contract.getPaymentTerm().getIncrease();
+	public void checkIncreaseIsBetweenZeroAndOneHundred(PaymentTerm paymentTerm) {
+		float premiumIncrease = paymentTerm.getIncrease();
 		
-		if (premiumIncrease < 0.0 || premiumIncrease > 100.0) {
-			error("Premium increase needs to be a value between 0.0 and 100.0",
-					MyDslPackage.Literals.PREMIUM_INCREASE_TERM__PREMIUM_INCREASE, INVALID_PREMIUM_INCREASE);
-		}
+		if (premiumIncrease < 0.0 || premiumIncrease > 100.0)
+			error("Premium increase needs to be a value between 0.0 and 100.0", paymentTerm, 
+					MyDslPackage.Literals.PAYMENT_TERM__INCREASE, INVALID_PREMIUM_INCREASE);
+
 	}
 	
-	
+	/**
+	 * Check if premium period is not zero or less than zero.
+	 * 
+	 * Premium period must always be a positive number (days between payments).
+	 * 
+	 * @param paymentTerm
+	 */
 	@Check(CheckType.NORMAL)
-	public void checkPremiumPeriodIsNotZero(Contract contract) {
-		int premiumPeriod = contract.getPaymentTerm().getPeriod();
+	public void checkPremiumPeriodIsNotZero(PaymentTerm paymentTerm) {
+		int premiumPeriod = paymentTerm.getPeriod();
 		
-		if (premiumPeriod <= 0) {
-			error("Premium period needs to be greater than 0",
+		if (premiumPeriod <= 0)
+			error("Premium period needs to be greater than 0", paymentTerm, 
 					MyDslPackage.Literals.PAYMENT_TERM__PERIOD, INVALID_PAYMENT_PERIOD);
-		}
+		
 	}
 	 
 	
@@ -67,6 +100,11 @@ public class MyDslValidator extends AbstractMyDslValidator {
 	 * Iterate over customers and sum participation percentages. Check they are equal to 100%.
 	 * 
 	 * Only applicable to pool contracts.
+	 * 
+	 * Note:
+	 *   
+	 *   The error will point to the first customer in the contract; this customer is not necessarily
+	 *   the one for which the change in participation must be made.
 	 * 
 	 * @param contract
 	 */
@@ -80,24 +118,27 @@ public class MyDslValidator extends AbstractMyDslValidator {
 					.sum(); 
 							
 			if (totalCustomerParticipation != 100.0) 
-				error("Invalid customer participation; must be 100%; but is " + totalCustomerParticipation, null);
+				error("Invalid customer participation; must be a total of 100.0%;"
+						+ " but is " + totalCustomerParticipation, contract,
+						MyDslPackage.Literals.CONTRACT__CUSTOMERS, INVALID_CUSTOMER_PARTICIPATION);
 			
 		}
 	}
 	
 	
 	/**
-	 * if contract type is personal then check that there exists only one customer.
+	 * If contract type is personal then check that there exists only one customer.
 	 * 
 	 * His participation is optional in this case and should default to 100%
 	 * 
 	 *  @param contract
 	 */
 	@Check(CheckType.NORMAL)
-	public void checkParticipationTypeOptionalAndFullForPersonalContract(Contract contract) {
+	public void checkOnlyOneCustomerForPersonalContract(Contract contract) {
 		if (contract.getType() == ContractType.PERSONAL) 
 			if (contract.getCustomers().size() != 1) 
-				error("Personal contract needs to have only one customer", null);								
+				error("Personal contract needs to have only one customer", contract,
+						MyDslPackage.Literals.CONTRACT__CUSTOMERS, INVALID_CUSTOMER_NUMBER_PERSONAL);								
 	}
 	
 
@@ -106,16 +147,19 @@ public class MyDslValidator extends AbstractMyDslValidator {
 	 * For family and personal contracts, participation is automatically calculated
 	 * Throw a warning if a custom value is provided
 	 * 
+	 * This validation is a warning. If any participation percentages are specified
+	 * they will be ignored in the generator.
+	 * 
 	 * @param contract
 	 */
 	@Check(CheckType.NORMAL)
-	public void checkForUnnecessaryParticipations(Contract contract) {
-		
+	public void checkForUnnecessaryParticipationsInPersonalAndFamilyContracts(Contract contract) {
 		if (ContractType.FAMILY.equals(contract.getType()) || ContractType.PERSONAL.equals(contract.getType())) 						
 			for (Customer c : contract.getCustomers()) 
 				if (c.getParticipation() != 0.0) 
-					warning("No participation needs to be specified for family contracts;"
-							+ "Sum is split equally among the beneficiaries", MyDslPackage.Literals.CONTRACT__CUSTOMERS);					
+					warning("No participation needs to be specified for personal or family contracts; "
+							+ "Sum is split equally among the beneficiaries", contract, 
+							MyDslPackage.Literals.CONTRACT__CUSTOMERS, UNNECESSARY_PARTICIPATION_SPECIFICATION_PERSONAL_FAMILY);
 	}
 	
 	
@@ -138,7 +182,8 @@ public class MyDslValidator extends AbstractMyDslValidator {
 					.anyMatch(c -> Coverage.BENEFICIARY.equals(c.getCoverage()));
 			
 			if(!benExists)
-				error("Family Contracts need to have at least one beneficiary", null);
+				error("Family contracts need to have at least one beneficiary", contract,
+						MyDslPackage.Literals.CONTRACT__CUSTOMERS, UNSPECIFIED_BENEFICIARIES_FOR_FAMILY_CONTRACT);
 			
 			
 			int ownerCount = (int) contract.getCustomers()
@@ -147,14 +192,18 @@ public class MyDslValidator extends AbstractMyDslValidator {
 					.count();
 			
 			if(ownerCount != 1)
-				error("Family Contracts need to have at least one owner", null);
+				error("Family contracts need to have exactly one owner", contract,
+						MyDslPackage.Literals.CONTRACT__CUSTOMERS, UNSPECIFIED_OWNER_FOR_FAMILY_CONTRACT);
 			
 		}		
 	}
 	
 	
 	/**
-	 * If contract type is pool then there should not exist and beneficiaries
+	 * If contract type is pool then all the customers must be owners.
+	 * 
+	 * They are all owners of the insured object. Note that participations must be
+	 * specified in this case.
 	 * 
 	 * @param contract
 	 */
@@ -169,7 +218,8 @@ public class MyDslValidator extends AbstractMyDslValidator {
 					.count();
 			
 			 if(ownerCount != contract.getCustomers().size())
-				 error("Pool contracts should only consist of owners", null);		
+				 error("Pool contracts should only consist of owners", contract,
+						 MyDslPackage.Literals.CONTRACT__CUSTOMERS, UNSPECIFIED_OWNERSHIP_FOR_POOL_CONTRACT_CUSTOMERS);		
 		}		
 	}
 
