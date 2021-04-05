@@ -12,6 +12,7 @@ import org.xtext.example.mydsl.myDsl.ContractCancellationTerm
 import org.xtext.example.mydsl.myDsl.ClaimReductionTerm
 import org.xtext.example.mydsl.myDsl.PremiumIncreaseTerm
 import org.xtext.example.mydsl.myDsl.ContractType
+import org.xtext.example.mydsl.myDsl.Coverage
 
 /**
  * Generates code from your model files on save.
@@ -141,7 +142,7 @@ class MyDslGenerator extends AbstractGenerator {
 	//TODO dynamically create method bodies based on contract type
 	def String generateConstructor(Contract contract){
 		
-		val signature_start = "constructor() public {\n\n"
+		val signature_start = "constructor() {\n\n"
 		val signature_end = "\n}\n"	
 		
 		var body = 	
@@ -206,7 +207,7 @@ class MyDslGenerator extends AbstractGenerator {
 		lastPayment = block.timestamp;
 		contractState = ContractState.INACTIVE;
 		
-		«FOR customer: contract.customers»
+		«FOR customer: contract.customers.filter[coverage.equals(Coverage.BENEFICIARY)]»
 			beneficiaries.push(payable(«customer.name»));
 		«ENDFOR»
 		'''		
@@ -225,8 +226,8 @@ class MyDslGenerator extends AbstractGenerator {
 		
         «var idx = 0»
         «FOR customer: contract.customers»
-			customers.push(payable(«customer.name»));
-        	participations[customers[«idx»]] = «customer.participation»;
+        	customers.push(payable(«customer.name»));
+			participations[customers[«idx»]] = «customer.participation»;
    			«idx++»
    		«ENDFOR»
 		'''		
