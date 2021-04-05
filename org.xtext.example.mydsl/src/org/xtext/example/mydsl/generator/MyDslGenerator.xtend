@@ -33,7 +33,8 @@ class MyDslGenerator extends AbstractGenerator {
 	//TODO handle default values for not provided attributes
 	def String doGenerate(Contract contract) {
 		'''
-		pragma solidity ^0.4.15
+		// SPDX-License-Identifier: GPL-3.0
+		pragma solidity >=0.7.0 <0.9.0;
 		
 		contract «contract.name» {
 			
@@ -44,31 +45,34 @@ class MyDslGenerator extends AbstractGenerator {
 			«val claim = contract.claimTerm.claim»
 			«val paymentPeriod = contract.paymentTerm.period»
 			
-			address public companyAddress = «companyAddress»;			
-			uint256 public premium = «premium»;			
-			uint256 public premiumIncrease = «premiumIncrease»;			
-			uint256 public claim = «claim»;			
-			uint256 public paymentPeriod = «paymentPeriod»;
-			
-			uint256 public numAccidents = 0;			
-			uint256 public lastPayment;
-			
 			«IF contract.customers.size == 1»
-			«val customerAddress = contract.customers.get(0).name»
-			address public customerAddress = «customerAddress»;
+				«val customerAddress = contract.customers.get(0).name»
+				address public customer = «customerAddress»;
 			«ELSE»
-			address[] public customerAddresses = [«contract.customers.map[name].join(",")»]
+				address[] public customerAddresses = [«contract.customers.map[name].join(",")»]
 			«ENDIF»
+			address public company = «companyAddress»;			
+			
+			
+			uint256 public paymentPeriod = «paymentPeriod»;
+			uint256 public premiumIncrease = «premiumIncrease»;			
+			uint256 public claimAmount = «claim»;			
+			uint256 public premiumAmount = «premium»;			
+			uint256 public lastPayment;
+			uint256 public numClaims;			
+			
+			enum ContractState { ACTIVE, INACTIVE, BLOCKED }
+			ContractState public contractState;
 						
 			«contract.generateConstructor»
 			
-			«contract.generatePremiumFunction»
-			
-			«contract.generatePaymentFunction»
-			
+			«contract.generatePremiumPaymentFunction»
+						
 			«contract.generateClaimFunction»
 			
-			«contract.violationTerms.map[handleViolationTerms].join("\n")»
+			«generateGetPremium()»
+			
+			«generateGetClaim()»
 			
 		}
 		'''
@@ -77,15 +81,27 @@ class MyDslGenerator extends AbstractGenerator {
 
 	//TODO initialize violation variables and create corresponding methods to alter them
 	dispatch def String handleViolationTerms(ContractCancellationTerm violationTerm){
-		'''Dummy text'''
+		'''
+		if(lastPayment + paymentPeriod < block.timestamp) {
+            contractState = ContractState.BLOCKED;
+        }
+		'''
 	}
 	
 	dispatch def String handleViolationTerms(ClaimReductionTerm violationTerm){
-		'''Dummy text'''
+		'''
+		if(lastPayment + paymentPeriod < block.timestamp) {
+            claimAmount = claimAmount * (100 - «violationTerm.claimReduction»)/100;
+        }
+		'''
 	}
 	
 	dispatch def String handleViolationTerms(PremiumIncreaseTerm violationTerm){
-		'''Dummy text'''
+		'''
+		if(lastPayment + paymentPeriod < block.timestamp) {
+            premiumAmount = premiumAmount * (100 + «violationTerm.premiumIncrease»)/100;
+        }
+		'''
 	}
 
 
@@ -107,19 +123,56 @@ class MyDslGenerator extends AbstractGenerator {
 	}
 	
 	
+	def String generatePremiumPaymentFunction(Contract contract){
+					
+		val signature_start = "function pay() public payable {\n"
+		val signature_end = "\n}\n"	
+		
+		val violationTerms = contract.violationTerms.map[handleViolationTerms].join("\n")
+		
+		var body = 	
+			switch(contract.type) {		 
+				case ContractType.PERSONAL : generatePremiumFunctionPersonal(contract)
+				case ContractType.FAMILY : generatePremiumFunctionFamily(contract)					
+				case ContractType.POOL : generatePremiumFunctionPool(contract)					
+				default : ""			
+			}
+		
+		return signature_start.concat(violationTerms).concat(body).concat(signature_end);
+	}
+	
+	def String generateClaimFunction(Contract contract){
+		
+		val signature_start = "function claim() public payable {\n"
+		val signature_end = "\n}\n"	
+		
+		var body = 	
+			switch(contract.type) {		 
+				case ContractType.PERSONAL : generateClaimFunctionPersonal(contract)
+				case ContractType.FAMILY : generateClaimFunctionFamily(contract)					
+				case ContractType.POOL : generateClaimFunctionPool(contract)					
+				default : ""			
+			}
+		
+		return signature_start.concat(body).concat(signature_end);
+	}
+	
 	def String getContructorPersonal(Contract contract){
+		'''
+		numClaims = 0;
+        lastPayment = block.timestamp;
+        contractState = ContractState.INACTIVE;					
+		'''
+	}
+	
+	def String getContructorFamily(Contract contract){
+
 		'''
 		require(msg.value == getPremium1(customerAddress));
 		lastPayment = now;					
 		'''
 	}
 	
-	def String getContructorFamily(Contract contract){
-		'''
-		require(msg.value == getPremium1(customerAddress));
-		lastPayment = now;					
-		'''
-	}
 	def String getContructorPool(Contract contract){
 		'''
 		require(msg.value == getPremium1(customerAddress));
@@ -128,32 +181,86 @@ class MyDslGenerator extends AbstractGenerator {
 	}
 	
 	
-	def String generatePremiumFunction(Contract contract){
+	
+	def String generatePremiumFunctionPersonal(Contract contract){
 		'''
-		function getPremium(address customer) constant public returns (uint256 premium) {
-			return ((numAccidents * premiumIncrease) + 1) * premium;
-		}
+		require(contractState != ContractState.BLOCKED, "The contract has been blocked due to late payment.");
+		        
+        require(msg.sender == customer, "Only the contract owner can pay");
+               
+        require(msg.value == getPremium(), "Incorrect premium. Invoke the getPremium function to see the required amount");
+        
+        company.transfer(msg.value);
+        
+        contractState = ContractState.ACTIVE;
+        
+        lastPayment = block.timestamp;				
 		'''
 	}
 	
-	def String generatePaymentFunction(Contract contract){
+	def String generatePremiumFunctionFamily(Contract contract){
+
 		'''
-		function pay() public payable {
-			require(msg.sender == customerAddress);
-			require(msg.value == getPremium(customerAddress));
-			companyAddress.transfer(msg.value)
-			lastPayment = now;
-		}
+		require(msg.value == getPremium1(customerAddress));
+		lastPayment = now;					
 		'''
 	}
 	
-	def String generateClaimFunction(Contract contract){
+	def String generatePremiumFunctionPool(Contract contract){
 		'''
-		function claim() public payable {
-			customerAddress.transfer(claim);
-			numAccidents++;
-		}
+		require(msg.value == getPremium1(customerAddress));
+		lastPayment = now;					
 		'''
 	}
+	
+	
+	def String generateClaimFunctionPersonal(Contract contract){
+		'''
+		
+        require(contractState == ContractState.ACTIVE, "Premium payment required. Only an active contract can be claimed");
+        
+        require(msg.sender == company, "Claims can only be initiated by the insurer");
+        
+        require(msg.value == claimAmount, "Incorrect claim. Invoke the getClaim function to see the required amount");
+        
+        customer.transfer(claimAmount);
+
+        numClaims++;			
+		'''
+	}
+	
+	def String generateClaimFunctionFamily(Contract contract){
+
+		'''
+		require(msg.value == getPremium1(customerAddress));
+		lastPayment = now;					
+		'''
+	}
+	
+	def String generateClaimFunctionPool(Contract contract){
+		'''
+		require(msg.value == getPremium1(customerAddress));
+		lastPayment = now;					
+		'''
+	}
+	
+	def String generateGetPremium(){
+		'''
+		function getPremium() public view returns (uint256 premium) {
+	        return ((premiumIncrease * numClaims)/100 + 1) * premiumAmount;
+	    }
+		'''
+	}
+	
+	def String generateGetClaim(){
+		'''
+	 	function getClaim() public view returns (uint256 the_claim) {
+	        return claimAmount;
+	    }
+		'''
+	}
+	
+	
+	
 	
 }
