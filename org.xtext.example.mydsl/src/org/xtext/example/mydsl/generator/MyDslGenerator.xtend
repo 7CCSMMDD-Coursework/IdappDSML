@@ -82,25 +82,25 @@ class MyDslGenerator extends AbstractGenerator {
 	//TODO initialize violation variables and create corresponding methods to alter them
 	dispatch def String handleViolationTerms(ContractCancellationTerm violationTerm){
 		'''
-		if(lastPayment + paymentPeriod < block.timestamp) {
-            contractState = ContractState.BLOCKED;
-        }
+		«"    "»if(lastPayment + paymentPeriod < block.timestamp) {
+				contractState = ContractState.BLOCKED;
+			}«"\n\n"»
 		'''
 	}
 	
 	dispatch def String handleViolationTerms(ClaimReductionTerm violationTerm){
 		'''
-		if(lastPayment + paymentPeriod < block.timestamp) {
-            claimAmount = claimAmount * (100 - «violationTerm.claimReduction»)/100;
-        }
+		«"    "»if(lastPayment + paymentPeriod < block.timestamp) {
+				claimAmount = claimAmount * (100 - «violationTerm.claimReduction»)/100;
+			}«"\n\n"»
 		'''
 	}
 	
 	dispatch def String handleViolationTerms(PremiumIncreaseTerm violationTerm){
 		'''
-		if(lastPayment + paymentPeriod < block.timestamp) {
-            premiumAmount = premiumAmount * (100 + «violationTerm.premiumIncrease»)/100;
-        }
+		«"    "»if(lastPayment + paymentPeriod < block.timestamp) {
+				premiumAmount = premiumAmount * (100 + «violationTerm.premiumIncrease»)/100;
+			}«"\n\n"»
 		'''
 	}
 
@@ -108,7 +108,7 @@ class MyDslGenerator extends AbstractGenerator {
 	//TODO dynamically create method bodies based on contract type
 	def String generateConstructor(Contract contract){
 		
-		val signature_start = "constructor() public payable {\n"
+		val signature_start = "constructor() public payable {\n\n"
 		val signature_end = "\n}\n"	
 		
 		var body = 	
@@ -125,7 +125,7 @@ class MyDslGenerator extends AbstractGenerator {
 	
 	def String generatePremiumPaymentFunction(Contract contract){
 					
-		val signature_start = "function pay() public payable {\n"
+		val signature_start = "function pay() public payable {\n\n"
 		val signature_end = "\n}\n"	
 		
 		val violationTerms = contract.violationTerms.map[handleViolationTerms].join("\n")
@@ -143,7 +143,7 @@ class MyDslGenerator extends AbstractGenerator {
 	
 	def String generateClaimFunction(Contract contract){
 		
-		val signature_start = "function claim() public payable {\n"
+		val signature_start = "function claim() public payable {\n\n"
 		val signature_end = "\n}\n"	
 		
 		var body = 	
@@ -159,9 +159,9 @@ class MyDslGenerator extends AbstractGenerator {
 	
 	def String getContructorPersonal(Contract contract){
 		'''
-		numClaims = 0;
-        lastPayment = block.timestamp;
-        contractState = ContractState.INACTIVE;					
+		«"    "»numClaims = 0;
+		«"    "»lastPayment = block.timestamp;
+		«"    "»contractState = ContractState.INACTIVE;					
 		'''
 	}
 	
@@ -184,17 +184,17 @@ class MyDslGenerator extends AbstractGenerator {
 	
 	def String generatePremiumFunctionPersonal(Contract contract){
 		'''
-		require(contractState != ContractState.BLOCKED, "The contract has been blocked due to late payment.");
-		        
-        require(msg.sender == customer, "Only the contract owner can pay");
-               
-        require(msg.value == getPremium(), "Incorrect premium. Invoke the getPremium function to see the required amount");
-        
-        company.transfer(msg.value);
-        
-        contractState = ContractState.ACTIVE;
-        
-        lastPayment = block.timestamp;				
+		«"    "»require(contractState != ContractState.BLOCKED, "The contract has been blocked due to late payment.");
+
+		«"    "»require(msg.sender == customer, "Only the contract owner can pay");
+		
+		«"    "»require(msg.value == getPremium(), "Incorrect premium. Invoke the getPremium function to see the required amount");
+
+		«"    "»company.transfer(msg.value);
+
+		«"    "»contractState = ContractState.ACTIVE;
+
+		«"    "»lastPayment = block.timestamp;				
 		'''
 	}
 	
@@ -216,16 +216,15 @@ class MyDslGenerator extends AbstractGenerator {
 	
 	def String generateClaimFunctionPersonal(Contract contract){
 		'''
-		
-        require(contractState == ContractState.ACTIVE, "Premium payment required. Only an active contract can be claimed");
-        
-        require(msg.sender == company, "Claims can only be initiated by the insurer");
-        
-        require(msg.value == claimAmount, "Incorrect claim. Invoke the getClaim function to see the required amount");
-        
-        customer.transfer(claimAmount);
+		«"    "»require(contractState == ContractState.ACTIVE, "Premium payment required. Only an active contract can be claimed");
 
-        numClaims++;			
+		«"    "»require(msg.sender == company, "Claims can only be initiated by the insurer");
+
+		«"    "»require(msg.value == claimAmount, "Incorrect claim. Invoke the getClaim function to see the required amount");
+
+		«"    "»customer.transfer(claimAmount);
+
+		«"    "»numClaims++;
 		'''
 	}
 	
@@ -247,20 +246,16 @@ class MyDslGenerator extends AbstractGenerator {
 	def String generateGetPremium(){
 		'''
 		function getPremium() public view returns (uint256 premium) {
-	        return ((premiumIncrease * numClaims)/100 + 1) * premiumAmount;
-	    }
+			return ((premiumIncrease * numClaims)/100 + 1) * premiumAmount;
+		}
 		'''
 	}
 	
 	def String generateGetClaim(){
 		'''
-	 	function getClaim() public view returns (uint256 the_claim) {
-	        return claimAmount;
-	    }
+		function getClaim() public view returns (uint256 the_claim) {
+			return claimAmount;
+		}
 		'''
 	}
-	
-	
-	
-	
 }
