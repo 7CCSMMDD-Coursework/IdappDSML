@@ -31,7 +31,6 @@ class MyDslGenerator extends AbstractGenerator {
 		originalFileName.substring(0, originalFileName.indexOf(".")) + ".sol";
 	}
 	
-	//TODO handle default values for not provided attributes
 	def String doGenerate(Contract contract) {
 		'''
 		// SPDX-License-Identifier: GPL-3.0
@@ -89,7 +88,7 @@ class MyDslGenerator extends AbstractGenerator {
 		if(ContractType.PERSONAL.equals(contractType)){		
 			result = 
 			'''
-			address payable customer = payable(«contract.customers.get(0).name»);
+				address payable customer = payable(«contract.customers.get(0).name»);
 			'''
 		}
 		
@@ -103,7 +102,8 @@ class MyDslGenerator extends AbstractGenerator {
 		}
 		
 		if(ContractType.POOL.equals(contractType)){
-			result = '''
+			result = 
+			'''
 				address payable[] customers;			    
 				mapping(address => uint256) private participations;
 				uint256 private totalPremiumReleased;
@@ -113,8 +113,9 @@ class MyDslGenerator extends AbstractGenerator {
 		return result;				
 	}
 
-	//TODO initialize violation variables and create corresponding methods to alter them
+
 	dispatch def String handleViolationTerms(ContractCancellationTerm violationTerm){
+		
 		'''
 		«"    "»if(lastPayment + paymentPeriod < block.timestamp) {
 				contractState = ContractState.BLOCKED;
@@ -124,6 +125,7 @@ class MyDslGenerator extends AbstractGenerator {
 	}
 	
 	dispatch def String handleViolationTerms(ClaimReductionTerm violationTerm){
+		
 		'''
 		«"    "»if(lastPayment + paymentPeriod < block.timestamp) {
 				claimAmount = claimAmount * (100 - «violationTerm.claimReduction»)/100;
@@ -132,6 +134,7 @@ class MyDslGenerator extends AbstractGenerator {
 	}
 	
 	dispatch def String handleViolationTerms(PremiumIncreaseTerm violationTerm){
+		
 		'''
 		«"    "»if(lastPayment + paymentPeriod < block.timestamp) {
 				premiumAmount = premiumAmount * (100 + «violationTerm.premiumIncrease»)/100;
@@ -140,7 +143,6 @@ class MyDslGenerator extends AbstractGenerator {
 	}
 
 
-	//TODO dynamically create method bodies based on contract type
 	def String generateConstructor(Contract contract){
 		
 		val signature_start = "constructor() {\n\n"
@@ -236,15 +238,38 @@ class MyDslGenerator extends AbstractGenerator {
 	
 	
 	
-	def String generatePremiumFunctionPersonal(Contract contract){
-		'''
-		«"    "»require(msg.sender == customer, "Only the contract owner can pay");
+	def String generateRequirement(String left, String operator, String right, String error_message){
 		
-		«"    "»require(msg.value == getPremium(), "Incorrect premium. Invoke the getPremium function to see the required amount");
+		'''
+		«"    "»require(«left» «operator» «right», "«error_message»");
+		'''
+	}
+	
 
-		«"    "»company.transfer(msg.value);
+	def String generateTransfer(String address, String value) {
+		
+		'''
+		«"    "»«address».transfer(«value»);
+		'''
+	}
 
+	def String statementActivateContract() {
+		
+		'''
 		«"    "»contractState = ContractState.ACTIVE;
+		'''
+	}
+	
+	def String generatePremiumFunctionPersonal(Contract contract){
+		
+		'''
+		«generateRequirement("msg.sender", "==", "customer", "Only the contract owner can pay")»
+
+		«generateRequirement("msg.value", "==", "getPremium()", "Incorrect premium. Invoke the getPremium function to see the required amount")»
+
+		«generateTransfer("company", "msg.value")»
+		
+		«statementActivateContract»
 
 		«"    "»lastPayment = block.timestamp;				
 		'''
@@ -253,46 +278,47 @@ class MyDslGenerator extends AbstractGenerator {
 	def String generatePremiumFunctionFamily(Contract contract){
 
 		'''		        
-        «"    "»require(msg.sender == owner, "Only the contract owner can pay");
-        
-        «"    "»require(msg.value == getPremium(), "Incorrect premium. Invoke the getPremium function to see the required amount");
-        
-        «"    "»company.transfer(msg.value);
+		«generateRequirement("msg.sender", "==", "owner", "Only the contract owner can pay")»
+		
+		«generateRequirement("msg.value", "==", "getPremium()", "Incorrect premium. Invoke the getPremium function to see the required amount")»
+		
+		«generateTransfer("company", "msg.value")»
 
-        «"    "»contractState = ContractState.ACTIVE;
+		«statementActivateContract»
 
-        «"    "»lastPayment = block.timestamp;				
+		«"    "»lastPayment = block.timestamp;				
 		'''
 	}
 	
 	def String generatePremiumFunctionPool(Contract contract){
+		
 		'''		        
-        «"    "»require(participations[msg.sender] > 0, "This address is not a contract participant");
-        
-        «"    "»require(msg.value == getPremium(), "Incorrect premium. Invoke the getPremium function to see the required amount");
-        
-        «"    "»totalPremiumReleased += msg.value;
-        
-        «"    "»if(totalPremiumReleased == getTotalPremium()){
-        		company.transfer(totalPremiumReleased);
-        		contractState = ContractState.ACTIVE;
-        		lastPayment = block.timestamp;
-        		totalPremiumReleased = 0;
-        	}
+		«generateRequirement("participations[msg.sender]", ">", "0", "This address is not a contract participant")»
+
+		«generateRequirement("msg.value", "==", "getPremium()", "Incorrect premium. Invoke the getPremium function to see the required amount")»
+		
+		«"    "»totalPremiumReleased += msg.value;
+		
+		«"    "»if(totalPremiumReleased == getTotalPremium()){
+				«generateTransfer("company", "totalPremiumReleased")»
+				«statementActivateContract»
+				lastPayment = block.timestamp;
+				totalPremiumReleased = 0;
+			}
 		'''
 	}
-	
-	
+		
 	def String generateClaimFunctionPersonal(Contract contract){
+		
 		'''
-		«"    "»require(contractState == ContractState.ACTIVE, "Premium payment required. Only an active contract can be claimed");
-
-		«"    "»require(msg.sender == company, "Claims can only be initiated by the insurer");
-
-		«"    "»require(msg.value == claimAmount, "Incorrect claim. Invoke the getClaim function to see the required amount");
-
-		«"    "»customer.transfer(claimAmount);
-
+		«generateRequirement("contractState", "==", "ContractState.ACTIVE", "Premium payment required. Only an active contract can be claimed")»
+		
+		«generateRequirement("msg.sender", "==", "company", "Claims can only be initiated by the insurer")»
+		
+		«generateRequirement("msg.value", "==", "claimAmount", "Incorrect claim. Invoke the getClaim function to see the required amount")»
+		
+		«generateTransfer("customer", "claimAmount")»
+		
 		«"    "»numClaims++;
 		'''
 	}
@@ -300,34 +326,35 @@ class MyDslGenerator extends AbstractGenerator {
 	def String generateClaimFunctionFamily(Contract contract){
 
 		'''
-        «"    "»require(contractState == ContractState.ACTIVE, "Premium payment required. Only an active contract can be claimed");
-        
-        «"    "»require(msg.sender == company, "Claims can only be initiated by the insurer");
-        
-        «"    "»require(msg.value == claimAmount, "Incorrect claim. Invoke the getClaim function to see the required amount");
-        
-        «"    "»for (uint i = 0; i < beneficiaries.length; i++) {
-        		beneficiaries[i].transfer(claimAmount / beneficiaries.length);
-        	}
+		«generateRequirement("contractState", "==", "ContractState.ACTIVE", "Premium payment required. Only an active contract can be claimed")»
+		
+		«generateRequirement("msg.sender", "==", "company", "Claims can only be initiated by the insurer")»
+		
+		«generateRequirement("msg.value", "==", "claimAmount", "Incorrect claim. Invoke the getClaim function to see the required amount")»
+		
+		«"    "»for (uint i = 0; i < beneficiaries.length; i++) {
+			«generateTransfer("beneficiaries[i]", "claimAmount / beneficiaries.length")»
+		«"    "»}
 
-        «"    "»numClaims++;
+		«"    "»numClaims++;
 		'''
 	}
 	
 	def String generateClaimFunctionPool(Contract contract){
-		'''
-		«"    "»require(contractState == ContractState.ACTIVE, "Premium payment required. Only an active contract can be claimed");
-
-		«"    "»require(msg.sender == company, "Claims can only be initiated by the insurer");
 		
-		«"    "»require(msg.value == claimAmount, "Incorrect claim. Invoke the getClaim function to see the required amount");
+		'''
+		«generateRequirement("contractState", "==", "ContractState.ACTIVE", "Premium payment required. Only an active contract can be claimed")»
+
+		«generateRequirement("msg.sender", "==", "company", "Claims can only be initiated by the insurer")»
+		
+		«generateRequirement("msg.value", "==", "claimAmount", "Incorrect claim. Invoke the getClaim function to see the required amount")»
 
 		«"    "»for (uint i = 0; i < customers.length; i++) {
 				address payable customer = customers[i];
-				customer.transfer(claimAmount * participations[customer]/100);
-			}
+			«generateTransfer("customer", "claimAmount * participations[customer]/100")»
+				}
 
-		«"    "»numClaims++;
+		numClaims++;
 		'''
 	}
 	
@@ -360,7 +387,7 @@ class MyDslGenerator extends AbstractGenerator {
 	def String generateGetPremiumPool(){
 		'''
 		function getPremium() public view returns (uint256 premium) {
-			require(participations[msg.sender] > 0, "This address is not a contract participant");
+			«generateRequirement("participations[msg.sender]", ">", "0", "This address is not a contract participant")»
 			return getTotalPremium() * participations[msg.sender]/100;
 		}
 		'''	
