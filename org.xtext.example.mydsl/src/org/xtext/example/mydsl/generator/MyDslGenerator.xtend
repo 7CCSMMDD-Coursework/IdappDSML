@@ -119,8 +119,8 @@ class MyDslGenerator extends AbstractGenerator {
 		'''
 		«"    "»if(lastPayment + paymentPeriod < block.timestamp) {
 				contractState = ContractState.BLOCKED;
-				require(contractState != ContractState.BLOCKED, "The contract has been blocked due to late payment.");
 			}«"\n\n"»
+			require(contractState != ContractState.BLOCKED, "The contract has been blocked due to late payment.");
 		'''
 	}
 	
@@ -300,8 +300,8 @@ class MyDslGenerator extends AbstractGenerator {
 		«"    "»totalPremiumReleased += msg.value;
 		
 		«"    "»if(totalPremiumReleased == getTotalPremium()){
-				«generateTransfer("company", "totalPremiumReleased")»
-				«statementActivateContract»
+			«generateTransfer("company", "totalPremiumReleased")»
+			«statementActivateContract»
 				lastPayment = block.timestamp;
 				totalPremiumReleased = 0;
 			}
@@ -352,9 +352,9 @@ class MyDslGenerator extends AbstractGenerator {
 		«"    "»for (uint i = 0; i < customers.length; i++) {
 				address payable customer = customers[i];
 			«generateTransfer("customer", "claimAmount * participations[customer]/100")»
-				}
+			}
 
-		numClaims++;
+		«"    "»numClaims++;
 		'''
 	}
 	
@@ -387,7 +387,7 @@ class MyDslGenerator extends AbstractGenerator {
 	def String generateGetPremiumPool(){
 		'''
 		function getPremium() public view returns (uint256 premium) {
-			«generateRequirement("participations[msg.sender]", ">", "0", "This address is not a contract participant")»
+		«generateRequirement("participations[msg.sender]", ">", "0", "This address is not a contract participant")»
 			return getTotalPremium() * participations[msg.sender]/100;
 		}
 		'''	

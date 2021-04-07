@@ -33,7 +33,7 @@ PaymentTerm:
 ;
 
 ClaimTerm:
-	'Amount of' claim=REAL ('with claimer' claimer=[Customer|ADDRESS])?
+	'Amount of' claim=REAL 'claimed' ('by' claimer=[Customer|ADDRESS])?
 ;
 
 ViolationTerm:
