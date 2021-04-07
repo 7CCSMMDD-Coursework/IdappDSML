@@ -29,7 +29,7 @@ enum Coverage:
 ;
 
 PaymentTerm:
-	'Amount of' premium=REAL 'payable every' period=INT 'days' increase=REAL'%' 'increase per claim'
+	'Amount of' premium=REAL 'payable every' period=INT 'days' increase=INT'%' 'increase per claim'
 ;
 
 ClaimTerm:
@@ -45,15 +45,15 @@ ContractCancellationTerm:
 ;
 
 ClaimReductionTerm:
-	'claim reduced by' claimReduction=REAL'%'
+	'claim reduced by' claimReduction=INT'%'
 ;
 
 PremiumIncreaseTerm:
-	'premium increased by' premiumIncrease=REAL'%'
+	'premium increased by' premiumIncrease=INT'%'
 ;
 
 Customer:
-	'customer with address' name=ADDRESS ('is' coverage=Coverage)? ('participates with' participation=REAL '%')?
+	'customer with address' name=ADDRESS ('is' coverage=Coverage)? ('participates with' participation=INT '%')?
 ;
 
 Company:

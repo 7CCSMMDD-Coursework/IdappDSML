@@ -49,11 +49,11 @@ class MyDslGenerator extends AbstractGenerator {
 			
 			address payable company = payable(«companyAddress»);			
 						
-			uint256 public paymentPeriod = «paymentPeriod» days;
-			uint256 public premiumIncrease = «premiumIncrease»;			
-			uint256 public claimAmount = «claim» ether;			
-			uint256 public premiumAmount = «premium» ether;			
-			uint256 public lastPayment;
+			uint256 private paymentPeriod = «paymentPeriod» days;
+			uint256 private premiumIncrease = «premiumIncrease»;			
+			uint256 private claimAmount = «claim» ether;			
+			uint256 private premiumAmount = «premium» ether;			
+			uint256 private lastPayment;
 			uint256 public numClaims;			
 			
 			enum ContractState { ACTIVE, INACTIVE, BLOCKED }
