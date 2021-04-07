@@ -42,6 +42,66 @@ public class MyDslValidator extends AbstractMyDslValidator {
 	public static final String UNSPECIFIED_OWNERSHIP_FOR_POOL_CONTRACT_CUSTOMERS =
 			"Every pool contract customer must be an owner";
 	
+	
+	/**
+	 * If contract type is family. Then there needs to be ONE owner and one or more beneficiaries.
+	 * 
+	 * No participation will be specified. We will just divide the claim among the beneficiaries.
+	 * 
+	 * @param contract
+	 */
+	@Check(CheckType.NORMAL)
+	public void checkFamilyContractCoverage(Contract contract) {
+
+		if(ContractType.FAMILY.equals(contract.getType())){
+			
+			boolean benExists = contract.getCustomers()
+					.stream()
+					.anyMatch(c -> Coverage.BENEFICIARY.equals(c.getCoverage()));
+			
+			if(!benExists)
+				error("Family contracts need to have at least one beneficiary", contract,
+						MyDslPackage.Literals.CONTRACT__CUSTOMERS, UNSPECIFIED_BENEFICIARIES_FOR_FAMILY_CONTRACT);
+			
+			
+			int ownerCount = (int) contract.getCustomers()
+					.stream()
+					.filter(c -> Coverage.OWNER.equals(c.getCoverage()))
+					.count();
+			
+			if(ownerCount != 1)
+				error("Family contracts need to have exactly one owner", contract,
+						MyDslPackage.Literals.CONTRACT__CUSTOMERS, UNSPECIFIED_OWNER_FOR_FAMILY_CONTRACT);
+			
+		}		
+	}	
+	
+	
+	/**
+	 * If contract type is pool then all the customers must be owners.
+	 * 
+	 * They are all owners of the insured object. Note that participations must be
+	 * specified in this case.
+	 * 
+	 * @param contract
+	 */
+	@Check(CheckType.NORMAL)
+	public void checkPoolOnlyHasOwners(Contract contract) {
+
+		if(ContractType.POOL.equals(contract.getType())){
+						
+			 int ownerCount = (int)contract.getCustomers()
+					.stream()
+					.filter(c -> Coverage.OWNER.equals(c.getCoverage()))
+					.count();
+			
+			 if(ownerCount != contract.getCustomers().size())
+				 error("Pool contracts should only consist of owners", contract,
+						 MyDslPackage.Literals.CONTRACT__CUSTOMERS, UNSPECIFIED_OWNERSHIP_FOR_POOL_CONTRACT_CUSTOMERS);		
+		}		
+	}
+	
+	
 	/**
 	 * Check if customer claim is greater than premium paid.
 	 * 
@@ -78,23 +138,6 @@ public class MyDslValidator extends AbstractMyDslValidator {
 
 	}
 	
-	/**
-	 * Check if premium period is not zero or less than zero.
-	 * 
-	 * Premium period must always be a positive number (days between payments).
-	 * 
-	 * @param paymentTerm
-	 */
-	@Check(CheckType.NORMAL)
-	public void checkPremiumPeriodIsNotZero(PaymentTerm paymentTerm) {
-		int premiumPeriod = paymentTerm.getPeriod();
-		
-		if (premiumPeriod <= 0)
-			error("Premium period needs to be greater than 0", paymentTerm, 
-					MyDslPackage.Literals.PAYMENT_TERM__PERIOD, INVALID_PAYMENT_PERIOD);
-		
-	}
-	 
 	
 	/**
 	 * Iterate over customers and sum participation percentages. Check they are equal to 100%.
@@ -126,6 +169,24 @@ public class MyDslValidator extends AbstractMyDslValidator {
 	}
 	
 	
+	/**
+	 * Check if premium period is not zero or less than zero.
+	 * 
+	 * Premium period must always be a positive number (days between payments).
+	 * 
+	 * @param paymentTerm
+	 */
+	@Check(CheckType.NORMAL)
+	public void checkPremiumPeriodIsNotZero(PaymentTerm paymentTerm) {
+		int premiumPeriod = paymentTerm.getPeriod();
+		
+		if (premiumPeriod <= 0)
+			error("Premium period needs to be greater than 0", paymentTerm, 
+					MyDslPackage.Literals.PAYMENT_TERM__PERIOD, INVALID_PAYMENT_PERIOD);
+		
+	}
+	 
+		
 	/**
 	 * If contract type is personal then check that there exists only one customer.
 	 * 
@@ -162,65 +223,4 @@ public class MyDslValidator extends AbstractMyDslValidator {
 							MyDslPackage.Literals.CONTRACT__CUSTOMERS, UNNECESSARY_PARTICIPATION_SPECIFICATION_PERSONAL_FAMILY);
 	}
 	
-	
-	
-	/**
-	 * If contract type is family. Then there needs to be ONE owner and one or more beneficiaries.
-	 * 
-	 * No participation will be specified. We will just divide the claim among the beneficiaries.
-	 * 
-	 * @param contract
-	 */
-	@Check(CheckType.NORMAL)
-	public void checkFamilyContractCoverage(Contract contract) {
-
-		if(ContractType.FAMILY.equals(contract.getType())){
-			
-			//beneficiary is the default value so this will always pass.
-			boolean benExists = contract.getCustomers()
-					.stream()
-					.anyMatch(c -> Coverage.BENEFICIARY.equals(c.getCoverage()));
-			
-			if(!benExists)
-				error("Family contracts need to have at least one beneficiary", contract,
-						MyDslPackage.Literals.CONTRACT__CUSTOMERS, UNSPECIFIED_BENEFICIARIES_FOR_FAMILY_CONTRACT);
-			
-			
-			int ownerCount = (int) contract.getCustomers()
-					.stream()
-					.filter(c -> Coverage.OWNER.equals(c.getCoverage()))
-					.count();
-			
-			if(ownerCount != 1)
-				error("Family contracts need to have exactly one owner", contract,
-						MyDslPackage.Literals.CONTRACT__CUSTOMERS, UNSPECIFIED_OWNER_FOR_FAMILY_CONTRACT);
-			
-		}		
-	}
-	
-	
-	/**
-	 * If contract type is pool then all the customers must be owners.
-	 * 
-	 * They are all owners of the insured object. Note that participations must be
-	 * specified in this case.
-	 * 
-	 * @param contract
-	 */
-	@Check(CheckType.NORMAL)
-	public void checkPoolOnlyHasOwners(Contract contract) {
-
-		if(ContractType.POOL.equals(contract.getType())){
-						
-			 int ownerCount = (int)contract.getCustomers()
-					.stream()
-					.filter(c -> Coverage.OWNER.equals(c.getCoverage()))
-					.count();
-			
-			 if(ownerCount != contract.getCustomers().size())
-				 error("Pool contracts should only consist of owners", contract,
-						 MyDslPackage.Literals.CONTRACT__CUSTOMERS, UNSPECIFIED_OWNERSHIP_FOR_POOL_CONTRACT_CUSTOMERS);		
-		}		
-	}
-
 }
